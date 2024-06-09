@@ -1,0 +1,19 @@
+
+.side-nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.side-nav li {
+  margin: 10px 0;
+  font-size: large;
+}
+
+.side-nav a {
+  text-decoration: none;
+  color: #333;
+}
+
+.side-nav a:hover {
+  text-decoration: underline;
+}
