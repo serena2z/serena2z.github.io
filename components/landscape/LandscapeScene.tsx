@@ -38,6 +38,7 @@ type Props = {
   blocked: boolean;
   onState: (state: ViewState) => void;
   onReady: (available: boolean) => void;
+  onLoadingProgress: (progress: number) => void;
   onOpen: (room: RoomId) => void;
 };
 const LandscapeScene = forwardRef<LandscapeHandle, Props>(
@@ -213,13 +214,18 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           resources.push(texture);
           return texture;
         }
+        const loading = new T.LoadingManager();
+        loading.onProgress = (_url, loaded, total) => {
+          if (!cancelled) state.current.onLoadingProgress(loaded / total);
+        };
         const [surfaces, lighting, frieze] = await Promise.all([
           loadLandscapeSurfaces(
             Math.min(renderer.capabilities.getMaxAnisotropy(), 16),
+            loading,
           ),
-          new HDRLoader().loadAsync('/environment/sunny-lake-light.hdr'),
-          new T.TextureLoader().loadAsync(
-            '/materials/palace/painted-frieze.png',
+          new HDRLoader(loading).loadAsync('/environment/sunny-lake-light.hdr'),
+          new T.TextureLoader(loading).loadAsync(
+            '/materials/palace/painted-frieze.webp',
           ),
         ]);
         for (const maps of Object.values(surfaces))

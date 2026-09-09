@@ -57,7 +57,8 @@ export default function LandscapeExperience() {
   const [ready, setReady] = useState(false),
     [available, setAvailable] = useState(true),
     [paused, setPaused] = useState(true),
-    [night, setNight] = useState(false);
+    [night, setNight] = useState(false),
+    [loadingProgress, setLoadingProgress] = useState(0);
   const [menu, setMenu] = useState(false),
     [help, setHelp] = useState(false),
     [reading, setReading] = useState<RoomId | null>(null),
@@ -94,6 +95,7 @@ export default function LandscapeExperience() {
       setMenu(false);
       setHelp(false);
       if (
+        !ready ||
         !available ||
         (!view.traveling && lastArrival.current === target.node)
       ) {
@@ -104,7 +106,7 @@ export default function LandscapeExperience() {
       pendingOpen.current = id;
       go(target.node);
     },
-    [available, go, view.traveling],
+    [ready, available, go, view.traveling],
   );
   useEffect(() => {
     if (
@@ -183,6 +185,7 @@ export default function LandscapeExperience() {
           night={night}
           blocked={menu || help || !!reading || !!photo}
           onReady={onReady}
+          onLoadingProgress={setLoadingProgress}
           onState={stop}
           onOpen={openCollection}
         />
@@ -288,9 +291,14 @@ export default function LandscapeExperience() {
         </div>
       </header>
       {!ready && (
-        <div className="landscape-loading">
-          <span />
-          <p>Finding the path…</p>
+        <div className="landscape-loading" aria-live="polite">
+          <span aria-hidden="true" />
+          <p>
+            {loadingProgress === 1
+              ? 'Opening the garden…'
+              : `Loading the garden… ${Math.round(loadingProgress * 100)}%`}
+          </p>
+          <small>You can browse Rooms while the garden loads.</small>
         </div>
       )}
       <div className="view-controls">

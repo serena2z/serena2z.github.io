@@ -1,0 +1,166 @@
+{
+  "note": "Smaller web copies of the scenery textures at their original pixel dimensions. Original JPG and PNG files are retained alongside these copies. Original attribution records are unchanged. These are environment assets, not personal photographs.",
+  "format": "WebP",
+  "files": [
+    {
+      "source": "public/materials/wood/color.jpg",
+      "target": "public/materials/wood/color.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 88,
+      "originalBytes": 609525,
+      "webBytes": 112880,
+      "sha256": "eedf601e79b35172d14c95dc17cce20f6147222f5f94b28c2ee6e71746071c37"
+    },
+    {
+      "source": "public/materials/wood/normal.jpg",
+      "target": "public/materials/wood/normal.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 92,
+      "originalBytes": 652441,
+      "webBytes": 148998,
+      "sha256": "93e133ba381f949bf9149a83ad9d78861178e719e5adb91e84ebce807bbb6ac5"
+    },
+    {
+      "source": "public/materials/wood/roughness.jpg",
+      "target": "public/materials/wood/roughness.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 85,
+      "originalBytes": 299757,
+      "webBytes": 13968,
+      "sha256": "6965aa9074391c3d5e855b6b54b96d9aecfdbfff375c7fe12f109778d80aa126"
+    },
+    {
+      "source": "public/materials/stone/color.jpg",
+      "target": "public/materials/stone/color.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 88,
+      "originalBytes": 315465,
+      "webBytes": 74586,
+      "sha256": "05a49a4d416d099f797484bbc2449cd070cda1a5791f7db5d35d45aeffa5951f"
+    },
+    {
+      "source": "public/materials/stone/normal.jpg",
+      "target": "public/materials/stone/normal.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 92,
+      "originalBytes": 155276,
+      "webBytes": 29576,
+      "sha256": "98efa772d8d95c5eabecdf0d99aa3422abe19d5c97d1e335c6fdda44f138bf17"
+    },
+    {
+      "source": "public/materials/stone/roughness.jpg",
+      "target": "public/materials/stone/roughness.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 85,
+      "originalBytes": 71241,
+      "webBytes": 11266,
+      "sha256": "2b390235c63002a4a9a0486b581174c365a569892d8ccb2e8db487195e2b27e3"
+    },
+    {
+      "source": "public/materials/plaster/color.jpg",
+      "target": "public/materials/plaster/color.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 88,
+      "originalBytes": 628421,
+      "webBytes": 371870,
+      "sha256": "aedf41f3317cc1603c619b1cc81a84e5ab62fcfe9841a237bdabc1db0085841e"
+    },
+    {
+      "source": "public/materials/plaster/normal.jpg",
+      "target": "public/materials/plaster/normal.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 92,
+      "originalBytes": 384190,
+      "webBytes": 162980,
+      "sha256": "6d11f84461d4557a8bea9e1f76a1e2b1032c20fdfd473582ba2562601b41974c"
+    },
+    {
+      "source": "public/materials/plaster/roughness.jpg",
+      "target": "public/materials/plaster/roughness.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 85,
+      "originalBytes": 594450,
+      "webBytes": 365572,
+      "sha256": "ad37fabe9c34523971ab0214f97aca4ece41566d66ed89adc37b6d408573fed3"
+    },
+    {
+      "source": "public/materials/grass/color.jpg",
+      "target": "public/materials/grass/color.webp",
+      "width": 2048,
+      "height": 2048,
+      "quality": 88,
+      "originalBytes": 3590243,
+      "webBytes": 1674582,
+      "sha256": "6d48e553525cafe8003ff85d191f53af2a7ef44a6d80695c40ca33f47466b0d2"
+    },
+    {
+      "source": "public/materials/grass/normal.jpg",
+      "target": "public/materials/grass/normal.webp",
+      "width": 2048,
+      "height": 2048,
+      "quality": 92,
+      "originalBytes": 5839113,
+      "webBytes": 2519574,
+      "sha256": "0c1f772c1bdda42708c8253fd3521a514ecf2daa05fad803adfd081c72e6157e"
+    },
+    {
+      "source": "public/materials/grass/roughness.jpg",
+      "target": "public/materials/grass/roughness.webp",
+      "width": 2048,
+      "height": 2048,
+      "quality": 85,
+      "originalBytes": 2611079,
+      "webBytes": 1631914,
+      "sha256": "a8d531287491c093396c343e0cb804c36b913bba9b2445c1b3ed79460c376fe3"
+    },
+    {
+      "source": "public/materials/bark/color.jpg",
+      "target": "public/materials/bark/color.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 88,
+      "originalBytes": 735610,
+      "webBytes": 193926,
+      "sha256": "798d185148ad1c264904866cc0a9536af1759faf6324caea2b9d311dd3be0a09"
+    },
+    {
+      "source": "public/materials/bark/normal.jpg",
+      "target": "public/materials/bark/normal.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 92,
+      "originalBytes": 994079,
+      "webBytes": 373094,
+      "sha256": "39312f264a714cc14f8bcb4af4362a2d3d8964e039b5ae18fcbb5983ebd4cc7a"
+    },
+    {
+      "source": "public/materials/bark/roughness.jpg",
+      "target": "public/materials/bark/roughness.webp",
+      "width": 1024,
+      "height": 1024,
+      "quality": 85,
+      "originalBytes": 228225,
+      "webBytes": 3142,
+      "sha256": "a22eaadaa00f3daac83c7642758ed89398ccb1df6c1710ac29fb8f9d5b197c2b"
+    },
+    {
+      "source": "public/materials/palace/painted-frieze.png",
+      "target": "public/materials/palace/painted-frieze.webp",
+      "width": 2172,
+      "height": 724,
+      "quality": 92,
+      "originalBytes": 2585087,
+      "webBytes": 420482,
+      "sha256": "984d90a1cf021afe5799c1ba7148e694021dc92630733b06598e2d6eb6b6fa78"
+    }
+  ]
+}

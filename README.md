@@ -17,6 +17,7 @@ Requires Node.js 22.13 or newer. Install the locked dependencies with `npm ci`, 
 - Drag to look around; scroll to look up and down. The + / − controls and pinching zoom without changing viewing modes.
 - Use the Day / Night button for sunny daylight or a moonlit sky with stars and warm silk lanterns. The transition reuses the existing lights and shadow map.
 - Press M or use “View from above” to see the whole estate. Returning restores the exact walking position and viewing direction.
+- Floating blossom petals are decorative and never block movement. They share one instanced draw, including the blossom that starts just ahead of the entrance bridge.
 - Ground markers are optional guided routes from the current position. Pressing a movement key cancels the route immediately. Room selections use a brief 0.4-second fade directly to the room, facing its central book or scroll. Reduced-motion mode arrives instantly.
 - Click a room's central glowing book or scroll, or press Enter, to open its collection. Opening from a doorway uses the same quick room transition. The Rooms directory provides direct collection access and a “Visit room” option.
 - Escape closes a reading panel. Navigation landmarks use `#at/…` links and browser history; free walking updates the current landmark without adding a history entry for every step.
@@ -46,7 +47,7 @@ Collection dialogs use simple note-style pages with plain headings, readable par
 
 The buildings and streets are inspired by the [Summer Palace](https://whc.unesco.org/en/list/880/) rather than a literal reconstruction. The architecture combines green glazed roofs, an amber double roof on the main hall, lacquered vermilion columns, painted beams, layered brackets, lattice windows, and raised porches. Three covered promenades connect the garden and rooms; individual pale stone pavers, circular landings, planting beds, and a stone pond terrace define the outdoor space. The eastern waypoint is moved slightly outward to keep the widened path clear of the pond.
 
-`lib/palace-architecture.ts` models the porches, columns, decorated beams, lattice, railings, walks, and garden borders. Shared geometric primitives live in `lib/landscape-geometry.ts`. The original lotus frieze at `public/materials/palace/painted-frieze.png` was generated once with the built-in image generation tool at 2172 × 724. Its exact prompt is recorded in `assets/references/palace-frieze.json`.
+`lib/palace-architecture.ts` models the porches, columns, decorated beams, lattice, railings, walks, and garden borders. Shared geometric primitives live in `lib/landscape-geometry.ts`. The original lotus frieze at `public/materials/palace/painted-frieze.png` (served as a smaller WebP copy) was generated once with the built-in image generation tool at 2172 × 724. Its exact prompt is recorded in `assets/references/palace-frieze.json`.
 
 ## Realistic rendering and assets
 
@@ -68,6 +69,10 @@ These material sets include 1024 × 1024 color, OpenGL normal, and roughness map
 An early generated concept panorama was not used and has been deleted; its exact generation prompt, original asset paths, source URLs, dimensions, and licensing details remain recorded in `assets/references/scenery-sources.json` and `assets/references/ground-bark-sources.json`.
 
 ## Rendering and performance
+
+Scenery textures are served as WebP copies at the same dimensions as the originals. The 16 images total 7.73 MB instead of 19.35 MB, a 60% reduction; the HDR lighting file is unchanged. The original JPG/PNG files are retained, and encoding settings, dimensions, sizes, and hashes are recorded in `assets/references/web-textures.json`. Grass color and the painted frieze start downloading from the initial HTML, before scene initialization.
+
+The loading screen reports actual asset completion, then switches to “Opening the garden” during scene preparation. The Rooms directory can open the portfolio notes immediately while the 3D garden is still loading.
 
 Static geometry is batched by material and location, with vertex indices preserved. This allows rooms outside the camera view to be culled and avoids duplicating vertices. Lantern components are batched within each moving lantern; collection objects remain individually clickable. Empty construction groups are pruned and static transforms are cached.
 

@@ -10,6 +10,22 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          crossOrigin="anonymous"
+          type="image/webp"
+          href="/materials/grass/color.webp"
+        />
+        <link
+          rel="preload"
+          as="image"
+          crossOrigin="anonymous"
+          type="image/webp"
+          href="/materials/palace/painted-frieze.webp"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

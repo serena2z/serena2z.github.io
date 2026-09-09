@@ -12,6 +12,7 @@ import type { Object3D } from 'three';
 import { createLanterns } from './landscape-lanterns';
 import { rooms, type RoomId } from './landscape-config';
 import { createFlowers } from './landscape-flowers';
+import { createDriftingPetals } from './landscape-petals';
 import { createInteriors } from './landscape-interiors';
 import { createTerrain, terrainHeight } from './landscape-terrain';
 import { createRoofPanel, roofPoint } from './palace-roof-surface';
@@ -437,25 +438,14 @@ export function createLandscapeWorld(
     5,
   );
   moon.rotation.y = 0.32;
-  const petals: T.Mesh[] = [];
-  for (let i = 0; i < 65; i++) {
-    const p = mesh(
-      new T.SphereGeometry(0.022, 8, 5),
-      '#ebc1b8',
-      world,
-      Math.sin(i * 2.4) * 24,
-      1 + (i % 10) * 0.55,
-      3 + Math.cos(i * 2.1) * 16,
-    );
-    p.scale.set(1.2, 0.3, 1);
-    petals.push(p);
-  }
+  const petals = createDriftingPetals(material('#ebc1b8'));
+  world.add(petals.mesh);
   // Draw stationary architecture in material batches; retain interactive objects.
   const moving = new Set<Object3D>([
     water,
     ...lanterns,
     ...contentObjects.values(),
-    ...petals,
+    petals.mesh,
   ]);
   // Lanterns still sway, but their small pieces share draws within each lantern.
   for (const lantern of lanterns) batchStaticMeshes(lantern);
@@ -493,12 +483,7 @@ export function createLandscapeWorld(
     lanterns.forEach(
       (g, i) => (g.rotation.z = Math.sin(time * 0.65 + i) * 0.025),
     );
-    petals.forEach((p, i) => {
-      p.position.y -= dt * 0.1;
-      p.position.x += Math.sin(time * 0.4 + i) * dt * 0.08;
-      p.rotation.y = time * 0.3;
-      if (p.position.y < 0.3) p.position.y = 6;
-    });
+    petals.update(dt, time);
   }
   function dispose() {
     water.dispose();

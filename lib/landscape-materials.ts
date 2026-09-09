@@ -10,13 +10,16 @@ export type LandscapeSurfaces = Record<
   SurfaceMaps
 >;
 
-export async function loadLandscapeSurfaces(anisotropy: number) {
-  const loader = new T.TextureLoader();
+export async function loadLandscapeSurfaces(
+  anisotropy: number,
+  manager: T.LoadingManager,
+) {
+  const loader = new T.TextureLoader(manager);
   async function surface(name: keyof LandscapeSurfaces): Promise<SurfaceMaps> {
     const folder = name === 'ground' ? 'grass' : name;
     const [color, normal, roughness] = await Promise.all(
       ['color', 'normal', 'roughness'].map((channel) =>
-        loader.loadAsync(`/materials/${folder}/${channel}.jpg`),
+        loader.loadAsync(`/materials/${folder}/${channel}.webp`),
       ),
     );
     color.colorSpace = T.SRGBColorSpace;
