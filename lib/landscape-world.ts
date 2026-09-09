@@ -8,7 +8,8 @@ import {
 import { createPlanting } from './landscape-planting';
 import { createLake } from './landscape-water';
 import { batchStaticMeshes } from './landscape-batching';
-import type { Object3D, Group } from 'three';
+import type { Object3D } from 'three';
+import { createLanterns } from './landscape-lanterns';
 import { rooms, type RoomId } from './landscape-config';
 import { createFlowers } from './landscape-flowers';
 import { createInteriors } from './landscape-interiors';
@@ -35,6 +36,9 @@ export function createLandscapeWorld(
     gold = '#c9aa69';
   const palace = createPalaceArchitecture(material, frieze);
   const flowers = createFlowers();
+  const lanternDesign = createLanterns();
+  const lanterns = lanternDesign.groups;
+  const lantern = lanternDesign.add;
   const interiors = createInteriors(
     material,
     makeSign,
@@ -98,42 +102,6 @@ export function createLandscapeWorld(
       0.09,
     );
     return g;
-  }
-  const lanterns: Group[] = [];
-  function lantern(p: Object3D, x: number, y: number, z: number, size = 0.13) {
-    const g = new T.Group();
-    g.position.set(x, y, z);
-    p.add(g);
-    lanterns.push(g);
-    cyl(g, 0, 0.13, 0, 0.013, 0.2, gold, 0.013, 6);
-    const l = mesh(
-      new T.SphereGeometry(size, 32, 20),
-      '#e99a62',
-      g,
-      0,
-      0,
-      0,
-      0,
-      true,
-    );
-    l.scale.y = 1.2;
-    cyl(g, 0, 0.14, 0, size * 0.53, 0.045, gold, size * 0.53, 10);
-    cyl(g, 0, -0.14, 0, size * 0.5, 0.035, gold, size * 0.5, 10);
-    cyl(g, 0, -0.23, 0, 0.015, 0.15, red, 0.015, 6);
-    for (let i = 0; i < 6; i++) {
-      const a = (i * Math.PI) / 3;
-      cyl(
-        g,
-        Math.cos(a) * size * 0.92,
-        0,
-        Math.sin(a) * size * 0.92,
-        0.009,
-        0.2,
-        '#ba7045',
-        0.009,
-        5,
-      );
-    }
   }
   function lamp(p: Object3D, x: number, z: number) {
     cyl(p, x, 0.58, z, 0.025, 1.16, wood, 0.025, 8);
@@ -294,25 +262,13 @@ export function createLandscapeWorld(
       palace.column(g, x, -d / 2 + 0.1, 3.82, 0.12);
     palace.porch(g, w, d);
     palace.beam(g, 0, 3.96, d / 2, w + 0.12, 0.38);
-    box(g, 0, 4.15, 0, w + 0.1, 0.13, d + 0.1, wood);
     // A painted coffered ceiling: lacquer panels framed by a grid of beams.
     const acrossX = Math.max(3, Math.round(w / 1.45)),
       acrossZ = Math.max(3, Math.round(d / 1.45));
     const panels = interiors.coffer(room.accent);
     panels.wrapS = panels.wrapT = T.RepeatWrapping;
     panels.repeat.set(acrossX, acrossZ);
-    const ceiling = new T.Mesh(
-      new T.PlaneGeometry(w, d),
-      new T.MeshStandardMaterial({
-        map: panels,
-        roughness: 0.55,
-        metalness: 0.05,
-      }),
-    );
-    ceiling.rotation.x = Math.PI / 2;
-    ceiling.position.y = 4.085;
-    ceiling.receiveShadow = true;
-    g.add(ceiling);
+    palace.ceiling(g, w, d, panels);
     for (let i = 1; i < acrossZ; i++)
       box(g, 0, 3.93, -d / 2 + (i * d) / acrossZ, w, 0.2, 0.17, wood);
     for (let i = 1; i < acrossX; i++)
@@ -516,6 +472,19 @@ export function createLandscapeWorld(
     object.matrixAutoUpdate = false;
     object.matrixWorldAutoUpdate = false;
   });
+  const roomLights: { light: T.PointLight; intensity: number }[] = [];
+  world.traverse((object) => {
+    if (object instanceof T.PointLight)
+      roomLights.push({ light: object, intensity: object.intensity });
+  });
+  function setNight(amount: number) {
+    lanternDesign.setNight(amount);
+    for (const { light, intensity } of roomLights)
+      light.intensity = intensity * T.MathUtils.lerp(1, 2.1, amount);
+    waterMaterial.uniforms.nightMix.value = amount;
+    // Finish a lighting switch even when scenery motion is paused.
+    if (amount === 0 || amount === 1) lake.invalidate();
+  }
   let time = 0;
   function update(dt: number, paused: boolean) {
     if (paused) return;
@@ -534,6 +503,7 @@ export function createLandscapeWorld(
   function dispose() {
     water.dispose();
     interiors.dispose();
+    lanternDesign.dispose();
   }
-  return { world, contentObjects, update, dispose };
+  return { world, contentObjects, update, setNight, dispose };
 }

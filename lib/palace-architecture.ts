@@ -21,6 +21,30 @@ export function createPalaceArchitecture(
     color: '#ffffff',
   });
 
+  function ceiling(
+    parent: T.Object3D,
+    width: number,
+    depth: number,
+    painting: T.Texture,
+  ) {
+    box(parent, 0, 4.15, 0, width + 0.1, 0.13, depth + 0.1, '#604238');
+    const panel = new T.Mesh(
+      new T.PlaneGeometry(width, depth),
+      new T.MeshStandardMaterial({
+        map: painting,
+        roughness: 0.65,
+        metalness: 0.03,
+      }),
+    );
+    panel.name = 'Painted lotus ceiling';
+    panel.rotation.x = Math.PI / 2;
+    // The backing's underside is at 4.085. Keep the painted face clearly below it.
+    panel.position.y = 4.05;
+    panel.receiveShadow = true;
+    parent.add(panel);
+    return panel;
+  }
+
   function beam(
     parent: T.Object3D,
     x: number,
@@ -414,6 +438,7 @@ export function createPalaceArchitecture(
   }
 
   return {
+    ceiling,
     beam,
     column,
     lattice,

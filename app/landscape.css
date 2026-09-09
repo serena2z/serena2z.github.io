@@ -189,6 +189,11 @@ kbd {
   background: #2c4a3fbf;
   transform: translateY(-1px);
 }
+.header-controls .day-night-button[aria-pressed='true'] {
+  color: #ffe8b9;
+  border-color: #d6b57480;
+  background: #273452b8;
+}
 .header-controls .rooms-button {
   background: #f3ebdb;
   color: #3a4c40;

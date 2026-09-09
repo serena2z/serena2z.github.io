@@ -13,8 +13,9 @@ Requires Node.js 22.13 or newer. Install the locked dependencies with `npm ci`, 
 
 ## Exploring
 
-- Hold ↑ / ↓ to walk forward and backward, and ← / → to turn. W / S are equivalent forward/backward shortcuts. Movement follows the current viewing direction, keeps your camera orientation, and respects walls, furnishings, the pond, and the shoreline.
+- Hold ↑ / ↓ to walk forward and backward, and ← / → to turn. W / S are equivalent forward/backward shortcuts. Walking speed is 4 world units per second. Movement follows the current viewing direction, keeps your camera orientation, and respects walls, furnishings, the pond, and the shoreline.
 - Drag to look around; scroll to look up and down. The + / − controls and pinching zoom without changing viewing modes.
+- Use the Day / Night button for sunny daylight or a moonlit sky with stars and warm silk lanterns. The transition reuses the existing lights and shadow map.
 - Press M or use “View from above” to see the whole estate. Returning restores the exact walking position and viewing direction.
 - Ground markers and room pins are optional guided routes from the current position. Pressing a movement key cancels the route immediately.
 - Click a room's central glowing book or scroll, or press Enter, to open its collection. Opening from a doorway walks inside first. The Rooms directory provides direct collection access and a “Just visit” option.
@@ -30,6 +31,8 @@ Requires Node.js 22.13 or newer. Install the locked dependencies with `npm ci`, 
 The confirmed initial content is Serena’s engineering affiliation at Phylo, this website, and the reference video she shared. Personal writing, research, and photography collections remain empty until supplied. The generated environment artwork is scenery, never presented as Serena’s photography.
 
 ## Furnished interiors and flowers
+
+Painted ceiling panels sit 3.5 cm below their wooden backing to prevent depth flicker. Lanterns share silk, brass, ribs, tassels, and glow materials; their light comes from the existing room fixtures, so nighttime adds no point lights or shadow passes.
 
 `lib/landscape-interiors.ts` gives every room a central reading desk and a distinct collection object. Each room is also decorated with canvas-painted textures generated in the browser: a framed ink-wash landscape and two bamboo hanging scrolls above the collection object, a woven rug with a key-fret border and lotus medallion in the room's accent color, ink-painted folding screens, wood wainscoting with a gilt rule, and two hanging lanterns with warm point lights. The ceiling is a painted coffer grid (`coffer` in the same module) framed by beams in `lib/landscape-world.ts`. All of this artwork is generated scenery, not Serena's own work. The workroom has an abacus and brass armillary, the writing pavilion has brushes and rolled papers, the library has full bookcases and reading tables, the gallery has easels and art supplies, and the tea house has tea service and a folding screen. Carved chairs, bordered rugs, cabinets, book stacks, porcelain, and flower arrangements fill the surrounding space. Gallery easels display the first two supplied photos at their correct proportions; until then their canvases remain blank.
 

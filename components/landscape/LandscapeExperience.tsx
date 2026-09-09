@@ -23,6 +23,8 @@ import {
   Play,
   HelpCircle,
   Compass,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import {
   Dialog,
@@ -57,7 +59,8 @@ export default function LandscapeExperience() {
   });
   const [ready, setReady] = useState(false),
     [available, setAvailable] = useState(true),
-    [paused, setPaused] = useState(true);
+    [paused, setPaused] = useState(true),
+    [night, setNight] = useState(false);
   const [menu, setMenu] = useState(false),
     [help, setHelp] = useState(false),
     [reading, setReading] = useState<RoomId | null>(null),
@@ -178,6 +181,7 @@ export default function LandscapeExperience() {
         <LandscapeScene
           ref={scene}
           paused={paused}
+          night={night}
           blocked={menu || help || !!reading || !!photo}
           onReady={onReady}
           onState={stop}
@@ -250,6 +254,17 @@ export default function LandscapeExperience() {
       <div className="scene-shade" />
       <header className="landscape-header">
         <div className="header-controls">
+          <button
+            className="day-night-button"
+            aria-label="Night mode"
+            aria-pressed={night}
+            title={night ? 'Switch to daylight' : 'Switch to nighttime'}
+            disabled={!ready || !available}
+            onClick={() => setNight((value) => !value)}
+          >
+            {night ? <Moon size={17} /> : <Sun size={17} />}
+            <span>{night ? 'Night' : 'Day'}</span>
+          </button>
           <button
             className="mode-button"
             aria-label={
@@ -495,7 +510,8 @@ export default function LandscapeExperience() {
           </div>
           <DialogTitle>A place to wander.</DialogTitle>
           <DialogDescription>
-            Take your time. There’s no right route.
+            Take your time. There’s no right route. Use Day / Night to change
+            the light.
           </DialogDescription>
           <ul>
             <li>

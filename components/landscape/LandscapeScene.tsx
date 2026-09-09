@@ -34,6 +34,7 @@ export type LandscapeHandle = {
 };
 type Props = {
   paused: boolean;
+  night: boolean;
   blocked: boolean;
   onState: (state: ViewState) => void;
   onReady: (available: boolean) => void;
@@ -68,6 +69,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           T,
           { OrbitControls },
           { createLandscapeWorld },
+          { createDaylight },
           { createWalkingSurface, walkingOffset, landmarkAt, scrollLook },
           { loadLandscapeSurfaces },
           { HDRLoader },
@@ -80,6 +82,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           import('three'),
           import('three/examples/jsm/controls/OrbitControls.js'),
           import('@/lib/landscape-world'),
+          import('@/lib/landscape-daylight'),
           import('@/lib/landscape-navigation'),
           import('@/lib/landscape-materials'),
           import('three/examples/jsm/loaders/HDRLoader.js'),
@@ -131,7 +134,8 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
         renderer.domElement.tabIndex = 0;
         scene.background = new T.Color('#86c6ee');
         scene.fog = new T.FogExp2('#c7e8f1', 0.0028);
-        scene.add(new T.HemisphereLight('#d9efff', '#8e956a', 1.05));
+        const hemisphere = new T.HemisphereLight('#d9efff', '#8e956a', 1.05);
+        scene.add(hemisphere);
         const sun = new T.DirectionalLight('#fff4dd', 3.8);
         sun.position.set(35, 28, 25);
         sun.castShadow = true;
@@ -255,6 +259,16 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
         lighting.mapping = T.EquirectangularReflectionMapping;
         scene.environment = lighting;
         scene.environmentIntensity = 0.9;
+        const daylight = createDaylight(
+          scene,
+          sky.material,
+          sun,
+          hemisphere,
+          fill,
+        );
+        let nightAmount = state.current.night ? 1 : 0;
+        daylight.setNight(nightAmount);
+        landscape.setNight(nightAmount);
         const target = new T.WebGLRenderTarget(
           host.clientWidth,
           host.clientHeight,
@@ -521,7 +535,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           updateLocation();
         }
         function forward() {
-          if (takeControl()) moveBy(walkingOffset(yaw, 1, 0, 0.65), 1);
+          if (takeControl()) moveBy(walkingOffset(yaw, 1, 0, 0.8), 1);
         }
         function open() {
           if (mode === 'overview' || journey || state.current.blocked) return;
@@ -919,7 +933,10 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
             orbit.enableDamping = !state.current.paused;
             orbit.update();
           } else orbit.enabled = false;
+          const nightTarget = state.current.night ? 1 : 0;
+          const lightingChanging = Math.abs(nightTarget - nightAmount) > 0.0001;
           const active =
+            lightingChanging ||
             !!journey ||
             walkingRoute.length > 0 ||
             held.size > 0 ||
@@ -937,6 +954,18 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           const dt = Math.min(elapsed / 1000, active ? 0.05 : 0.1);
           lastTime = now;
           lastRender = now;
+          if (lightingChanging) {
+            nightAmount = state.current.paused
+              ? nightTarget
+              : T.MathUtils.clamp(
+                  nightAmount +
+                    (Math.sign(nightTarget - nightAmount) * dt) / 1.4,
+                  0,
+                  1,
+                );
+            daylight.setNight(nightAmount);
+            landscape.setNight(nightAmount);
+          }
           if (active && now - startedAt > 4000 && budget.observe(elapsed))
             resizeRendering();
           if (journey && !state.current.blocked) {
@@ -989,7 +1018,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
               }
             }
             if (walkingRoute.length) {
-              let remaining = state.current.paused ? Infinity : 5.4 * dt;
+              let remaining = state.current.paused ? Infinity : 6.4 * dt;
               while (walkingRoute.length && remaining > 0) {
                 const target = walkingRoute[0];
                 const dx = target.x - camera.position.x,
@@ -1015,7 +1044,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
               const forward =
                 Number(held.has('arrowup') || held.has('w')) -
                 Number(held.has('arrowdown') || held.has('s'));
-              if (forward) moveBy(walkingOffset(yaw, forward, 0, 3.2 * dt), dt);
+              if (forward) moveBy(walkingOffset(yaw, forward, 0, 4 * dt), dt);
             }
           }
           landscape.update(dt, state.current.paused);
@@ -1098,6 +1127,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           const geos = new Set<BufferGeometry>(),
             mats = new Set<Material>();
           scene.traverse((o) => {
+            if (o instanceof T.Sprite) mats.add(o.material);
             if (o instanceof T.Mesh || o instanceof T.Line) {
               if (o instanceof T.InstancedMesh) o.dispose();
               geos.add(o.geometry);

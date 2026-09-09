@@ -15,6 +15,7 @@ export function createLake() {
         tDiffuse: { value: null },
         textureMatrix: { value: null },
         time: { value: 0 },
+        nightMix: { value: 0 },
       },
       vertexShader: `
         uniform mat4 textureMatrix;
@@ -30,6 +31,7 @@ export function createLake() {
         }`,
       fragmentShader: `
         uniform sampler2D tDiffuse;
+        uniform float nightMix;
         uniform float time;
         varying vec4 vReflection;
         varying vec3 vWorld;
@@ -49,8 +51,9 @@ export function createLake() {
           vec3 sunlight = normalize(vec3(35.0, 28.0, 25.0));
           float sparkle = pow(max(dot(normal, normalize(sunlight + eye)), 0.0), 240.0);
           float ripple = 0.012 * sin(vWorld.x * 0.41 + vWorld.z * 0.32 + time * 0.3);
-          vec3 lake = mix(vec3(0.075, 0.285, 0.235) + ripple, reflected, fresnel);
-          lake += vec3(1.0, 0.92, 0.68) * sparkle * 0.55;
+          vec3 baseWater = mix(vec3(0.075, 0.285, 0.235), vec3(0.008, 0.02, 0.035), nightMix);
+          vec3 lake = mix(baseWater + ripple * mix(1.0, 0.2, nightMix), reflected, fresnel);
+          lake += vec3(1.0, 0.92, 0.68) * sparkle * mix(0.55, 0.12, nightMix);
           gl_FragColor = vec4(lake, 1.0);
           #include <tonemapping_fragment>
           #include <colorspace_fragment>
@@ -68,6 +71,7 @@ export function createLake() {
     previousProjection = new T.Matrix4();
   let lastReflection = -Infinity,
     lastWaterTime = -Infinity;
+  let dirty = true;
   water.onBeforeRender = function (...args) {
     const scene = args[1],
       camera = args[2];
@@ -79,13 +83,20 @@ export function createLake() {
     const sceneryMoved =
       material.uniforms.time.value !== lastWaterTime &&
       now - lastReflection > 120;
-    if ((cameraMoved && now - lastReflection >= 65) || sceneryMoved) {
+    if (dirty || (cameraMoved && now - lastReflection >= 65) || sceneryMoved) {
       reflect(...args);
       previousView.copy(camera.matrixWorld);
       previousProjection.copy(camera.projectionMatrix);
       lastReflection = now;
+      dirty = false;
       lastWaterTime = material.uniforms.time.value;
     }
   };
-  return { surface: water, material };
+  return {
+    surface: water,
+    material,
+    invalidate: () => {
+      dirty = true;
+    },
+  };
 }
