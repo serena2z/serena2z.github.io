@@ -17,8 +17,8 @@ Requires Node.js 22.13 or newer. Install the locked dependencies with `npm ci`, 
 - Drag to look around; scroll to look up and down. The + / − controls and pinching zoom without changing viewing modes.
 - Use the Day / Night button for sunny daylight or a moonlit sky with stars and warm silk lanterns. The transition reuses the existing lights and shadow map.
 - Press M or use “View from above” to see the whole estate. Returning restores the exact walking position and viewing direction.
-- Ground markers and room pins are optional guided routes from the current position. Pressing a movement key cancels the route immediately.
-- Click a room's central glowing book or scroll, or press Enter, to open its collection. Opening from a doorway walks inside first. The Rooms directory provides direct collection access and a “Visit room” option.
+- Ground markers are optional guided routes from the current position. Pressing a movement key cancels the route immediately. Room selections use a brief 0.4-second fade directly to the room, facing its central book or scroll. Reduced-motion mode arrives instantly.
+- Click a room's central glowing book or scroll, or press Enter, to open its collection. Opening from a doorway uses the same quick room transition. The Rooms directory provides direct collection access and a “Visit room” option.
 - Escape closes a reading panel. Navigation landmarks use `#at/…` links and browser history; free walking updates the current landmark without adding a history entry for every step.
 - Motion respects the system reduced-motion preference. If 3D is unavailable, the Rooms directory opens every collection directly.
 

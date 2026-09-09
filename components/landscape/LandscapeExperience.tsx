@@ -87,13 +87,16 @@ export default function LandscapeExperience() {
     setRequested((p) => ({ id, serial: (p?.serial ?? 0) + 1 }));
     if (record) window.history.pushState(null, '', `#at/${id}`);
   }, []);
-  /** Open a room's collection, walking into the room first when needed. */
+  /** Open a room's collection after its arrival transition when needed. */
   const openCollection = useCallback(
     (id: RoomId) => {
       const target = findRoom(id)!;
       setMenu(false);
       setHelp(false);
-      if (!available || lastArrival.current === target.node) {
+      if (
+        !available ||
+        (!view.traveling && lastArrival.current === target.node)
+      ) {
         pendingOpen.current = null;
         setReading(id);
         return;
@@ -101,7 +104,7 @@ export default function LandscapeExperience() {
       pendingOpen.current = id;
       go(target.node);
     },
-    [available, go],
+    [available, go, view.traveling],
   );
   useEffect(() => {
     if (
@@ -157,8 +160,7 @@ export default function LandscapeExperience() {
       const open = pendingOpen.current;
       if (open && findRoom(open)?.node === next.waypoint) {
         pendingOpen.current = null;
-        // Let the room settle for a beat before the pages open.
-        window.setTimeout(() => setReading(open), 260);
+        setReading(open);
       }
     }
   }, []);
@@ -208,7 +210,7 @@ export default function LandscapeExperience() {
               style={{ '--room-accent': r.accent } as CSSProperties}
               onClick={() => go(r.node)}
               tabIndex={-1}
-              aria-label={`${r.name} — ${r.subject}. Walk inside.`}
+              aria-label={`${r.name} — ${r.subject}. Visit the room.`}
               title={r.name}
             >
               <span className="room-pin-chip">

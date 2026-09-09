@@ -361,6 +361,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           arrival: WaypointId | null;
           map: boolean;
           ease: 'in' | 'out' | 'both' | 'linear';
+          transition: 'move' | 'room';
         };
         let journey: Journey | null = null;
         const direction = new T.Vector3();
@@ -421,11 +422,32 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           freeWalking = false;
           destination = id;
           walkingRoute = [];
+          if (getWaypoint(id).room) {
+            // Room shortcuts arrive directly, with the collection already in view.
+            const pose = cameraPose(id);
+            mode = 'walk';
+            orbit.enabled = false;
+            orbitLengthTarget = null;
+            renderer.domElement.style.transition = 'none';
+            journey = {
+              from: camera.position.clone(),
+              to: pose.position,
+              fromQ: camera.quaternion.clone(),
+              toQ: pose.quaternion,
+              elapsed: 0,
+              duration: state.current.paused ? 0 : 0.4,
+              arrival: id,
+              map: false,
+              ease: 'linear',
+              transition: 'room',
+            };
+            notify();
+            return;
+          }
           if (mode === 'overview') {
             mode = 'walk';
             orbit.enabled = false;
-            const target = getWaypoint(id);
-            const landing = target.room ? target.neighbors[0] : id;
+            const landing = id;
             fov = 62;
             camera.fov = fov;
             fovTarget = fov;
@@ -441,6 +463,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
               arrival: landing,
               map: false,
               ease: 'both',
+              transition: 'move',
             };
             notify();
             return;
@@ -481,6 +504,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
             arrival: null,
             map: true,
             ease: 'both',
+            transition: 'move',
           };
           camera.fov = 48;
           orbitLengthTarget = null;
@@ -512,6 +536,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
             arrival: savedWalk.waypoint,
             map: false,
             ease: 'both',
+            transition: 'move',
           };
           notify();
         }
@@ -990,7 +1015,8 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           if (active && now - startedAt > 4000 && budget.observe(elapsed))
             resizeRendering();
           if (journey && !state.current.blocked) {
-            journey.elapsed += dt;
+            journey.elapsed +=
+              journey.transition === 'room' ? elapsed / 1000 : dt;
             const t =
               journey.duration === 0
                 ? 1
@@ -1003,15 +1029,34 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
                   : journey.ease === 'out'
                     ? 1 - (1 - t) * (1 - t)
                     : t;
-            camera.position.lerpVectors(journey.from, journey.to, eased);
-            camera.quaternion.slerpQuaternions(
-              journey.fromQ,
-              journey.toQ,
-              eased,
-            );
+            if (journey.transition === 'room') {
+              // Hide the position change entirely; don't fly through walls or spin.
+              const arrived = t >= 0.5;
+              renderer.domElement.style.opacity = String(
+                Math.max(0, Math.abs(t - 0.5) * 2.5 - 0.25),
+              );
+              camera.position.copy(arrived ? journey.to : journey.from);
+              camera.quaternion.copy(arrived ? journey.toQ : journey.fromQ);
+              if (arrived && camera.fov !== 62) {
+                fov = fovTarget = camera.fov = 62;
+                camera.updateProjectionMatrix();
+              }
+            } else {
+              camera.position.lerpVectors(journey.from, journey.to, eased);
+              camera.quaternion.slerpQuaternions(
+                journey.fromQ,
+                journey.toQ,
+                eased,
+              );
+            }
             if (t >= 1) {
               if (journey.arrival) current = journey.arrival;
               const wasMap = journey.map;
+              if (journey.transition === 'room') {
+                if (destination === journey.arrival) destination = null;
+                fov = fovTarget = 62;
+                renderer.domElement.style.removeProperty('opacity');
+              }
               journey = null;
               syncAngles();
               if (!wasMap && destination) startWalkingRoute(destination);
