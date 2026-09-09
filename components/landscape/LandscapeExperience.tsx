@@ -19,10 +19,7 @@ import {
   Plus,
   Minus,
   X,
-  Pause,
-  Play,
   HelpCircle,
-  Compass,
   Sun,
   Moon,
 } from 'lucide-react';
@@ -246,10 +243,6 @@ export default function LandscapeExperience() {
             </button>
           ))}
         </div>
-        <div className="compass" aria-label="Compass, north indicated">
-          <span>N</span>
-          <Compass data-compass-needle size={36} strokeWidth={1} />
-        </div>
       </section>
       <div className="scene-shade" />
       <header className="landscape-header">
@@ -316,15 +309,6 @@ export default function LandscapeExperience() {
           <Minus size={18} />
         </button>
         <i />
-        <button
-          aria-label={paused ? 'Resume scenery motion' : 'Pause scenery motion'}
-          title={paused ? 'Resume motion' : 'Pause motion'}
-          aria-pressed={paused}
-          disabled={!ready || !available}
-          onClick={() => setPaused((p) => !p)}
-        >
-          {paused ? <Play size={16} /> : <Pause size={16} />}
-        </button>
         <button
           aria-label="How to explore"
           title="How to explore"

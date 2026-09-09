@@ -1,6 +1,6 @@
 # Serena — A place to wander
 
-A full-screen Chinese period-drama landscape in Three.js. Visitors arrive at eye level on a stone bridge over a jade lake, look around in 360 degrees, walk freely through the garden, enter furnished rooms, and open each collection by clicking its central book or scroll. The garden is lit by bright summer sunshine, with beds of pink, cream, and lilac flowers. Aerial mode reveals the estate and provides room destinations. The interface stays at the edges of the landscape; the corner name and monogram have been removed.
+A full-screen Chinese period-drama landscape in Three.js. Visitors arrive at eye level on a stone bridge over a jade lake, look around in 360 degrees, walk freely through the garden, enter furnished rooms, and open each collection by clicking its central book or scroll. The garden is lit by bright summer sunshine, with beds of pink, cream, and lilac flowers. Aerial mode reveals the estate and provides room destinations. The interface stays at the edges of the landscape as a single family of soft cream pill buttons; there is no compass or motion-pause control.
 
 ## Getting started
 
@@ -9,7 +9,7 @@ Requires Node.js 22.13 or newer. Install the locked dependencies with `npm ci`, 
 - `npm test` runs the navigation, scrolling, roof geometry, batching, rendering budget, and water material regression checks.
 - `npm run typecheck` checks TypeScript.
 - `npm run lint` checks the source.
-- `npm run build` creates production output. `npm start` serves the generated Cloudflare Worker locally.
+- `npm run build` exports the complete static website to `dist/client` for GitHub Pages. `npm start` serves the generated production build locally.
 
 ## Exploring
 
@@ -18,9 +18,9 @@ Requires Node.js 22.13 or newer. Install the locked dependencies with `npm ci`, 
 - Use the Day / Night button for sunny daylight or a moonlit sky with stars and warm silk lanterns. The transition reuses the existing lights and shadow map.
 - Press M or use “View from above” to see the whole estate. Returning restores the exact walking position and viewing direction.
 - Ground markers and room pins are optional guided routes from the current position. Pressing a movement key cancels the route immediately.
-- Click a room's central glowing book or scroll, or press Enter, to open its collection. Opening from a doorway walks inside first. The Rooms directory provides direct collection access and a “Just visit” option.
+- Click a room's central glowing book or scroll, or press Enter, to open its collection. Opening from a doorway walks inside first. The Rooms directory provides direct collection access and a “Visit room” option.
 - Escape closes a reading panel. Navigation landmarks use `#at/…` links and browser history; free walking updates the current landmark without adding a history entry for every step.
-- Motion respects the system preference and can be paused. If 3D is unavailable, the Rooms directory opens every collection directly.
+- Motion respects the system reduced-motion preference. If 3D is unavailable, the Rooms directory opens every collection directly.
 
 ## Rooms and content
 
@@ -38,7 +38,7 @@ Painted ceiling panels sit 3.5 cm below their wooden backing to prevent depth fl
 
 Object positions, names, and action labels live with each room in `lib/landscape-config.ts`; `roomAt` resolves the room a visitor is inside of or standing at the doorway of. Only the central object opens the collection. Each one carries a warm reading-lamp glow (an additive sprite and a small point light) that brightens on hover. Hovering other furniture keeps the look-around cursor.
 
-Collection dialogs use the existing personal content, and close back into the same room. The folio design has two parts: a cover-colored spine tinted with the room's accent, carrying a vermilion seal with the chapter number, the room name, title, a faint watermark numeral, chapter buttons that switch between the five collections, and the return button; and a grained paper page with a slim toolbar, a large Cormorant Garamond title, and an independently scrolling reading area. Work features the current role and project cards; essays use a readable prose column; research separates authors, notes, and contributions; creative work uses uncropped photo mounts and captions; shared references have full-card links. Unfilled collections retain honest, styled empty states. Below 900px the spine becomes a slim band above the page. The Rooms directory and help panel share the same paper, seals, and type. Fonts are Cormorant Garamond and Inter from Google Fonts, imported at the top of `app/landscape.css`.
+Collection dialogs use simple note-style pages with plain headings, readable paragraphs, underlined links, and named navigation between the five collections. Each page scrolls independently and returns to the same room when closed. Photographs preserve their original proportions and open full size; drawings and captioned videos appear alongside plain captions. Empty collections display a short note. The Rooms directory uses a simple list of subjects and a separate “Visit room” option. Inter is used for the reading pages; the landscape retains Cormorant Garamond and Inter, imported from Google Fonts at the top of `app/landscape.css`.
 
 `lib/landscape-flowers.ts` adds layered petal flowers, stems, and leaves in the grassy spaces and indoor vases. Planting excludes buildings, the pond, and walking routes. Indoor arrangements and outdoor flowers share six instanced batches to limit the added rendering cost.
 
@@ -81,8 +81,10 @@ The current estate's geometry buffers use approximately 60 MB, down from 158 MB 
 
 The daylight scene and full room contents remain intact. Actual speed depends on the visitor's device and viewport; browser GPU profiling is still useful before a public launch.
 
-## Repository
+## Repository and publishing
 
-The repository includes site source, the dependency lockfile, tests, public scenery assets, and their attribution records. Generated builds, dependencies, TypeScript caches, local environment files, and local preview state are ignored. No remote is configured; add the destination repository as `origin` when ready to push the `main` branch.
+Source lives at [serena2z/serena2z.github.io](https://github.com/serena2z/serena2z.github.io). The public website is [serena2z.github.io](https://serena2z.github.io/).
 
-The current checkout has no registered hosted Site. The initial registration request returned an internal service error and did not create a matching Site. Hosting can be resumed once the service is available; do not reuse an unrelated Site.
+Pushing to `main` runs `.github/workflows/pages.yml`: install the locked dependencies, check types and lint, run the regression tests, build the static export, and publish only `dist/client` to GitHub Pages. The workflow can also be run manually from the repository’s Actions tab. GitHub Pages uses GitHub Actions as its publishing source. No server or runtime secrets are needed for the website.
+
+The repository includes site source, the dependency lockfile, tests, public scenery assets, and their attribution records. Generated builds, dependencies, TypeScript caches, local environment files, and local preview state are ignored. The previous website remains in Git history, and its `gh-pages` branch is preserved.

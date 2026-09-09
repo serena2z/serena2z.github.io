@@ -95,20 +95,6 @@ h3,
 p {
   margin: 0;
 }
-kbd {
-  display: inline-grid;
-  place-items: center;
-  min-width: 22px;
-  height: 22px;
-  padding: 0 6px;
-  border-radius: 5px;
-  font: 500 11px/1 var(--font-body);
-  color: #eee6d4;
-  background: #ffffff14;
-  border: 1px solid #ffffff2e;
-  box-shadow: inset 0 -1px 0 #0000003a;
-  vertical-align: middle;
-}
 ::selection {
   color: #fff;
   background: #698273;
@@ -148,6 +134,228 @@ kbd {
     linear-gradient(180deg, #10241f66 0, transparent 20%),
     linear-gradient(0deg, #0f231f8c 0, transparent 34%);
 }
+/* ---------- Controls: one soft cream family ---------- */
+:root {
+  --pill-bg: #f7f0e0;
+  --pill-bg-hover: #fffaf0;
+  --pill-ink: #2f4238;
+  --pill-soft: #7d8a78;
+  --pill-border: #fff8e8;
+  --pill-shadow: 0 8px 22px #10241f30, inset 0 1px 0 #fff;
+  --pill-shadow-hover: 0 12px 28px #10241f3d, inset 0 1px 0 #fff;
+  --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.header-controls button,
+.view-controls,
+.object-marker,
+.room-pin-chip,
+.walking-marker > b,
+.walking-marker > span {
+  background: var(--pill-bg);
+  color: var(--pill-ink);
+  border: 1px solid var(--pill-border);
+  border-radius: 999px;
+  box-shadow: var(--pill-shadow);
+  backdrop-filter: blur(10px);
+}
+.header-controls button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 12px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+  transition:
+    transform 0.35s var(--bounce),
+    background 0.2s,
+    box-shadow 0.2s;
+}
+.header-controls button:hover,
+.object-marker:hover {
+  background: var(--pill-bg-hover);
+  box-shadow: var(--pill-shadow-hover);
+  transform: translateY(-2px) scale(1.02);
+}
+.header-controls button:active,
+.object-marker:active,
+.view-controls button:active {
+  transform: scale(0.96);
+}
+.header-controls button svg {
+  color: var(--pill-soft);
+}
+.view-controls {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 8;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.view-controls button {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border-radius: 50%;
+  color: var(--pill-ink);
+  transition:
+    background 0.18s,
+    transform 0.3s var(--bounce);
+}
+.view-controls button:hover {
+  background: #e7ecdc;
+  transform: scale(1.08);
+}
+.view-controls i {
+  height: 1px;
+  background: #ddd4bf;
+  margin: 4px 9px;
+}
+kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 7px;
+  font: 600 11px/1 var(--font-body);
+  color: var(--pill-ink);
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  box-shadow:
+    0 2px 0 #cfc5ad,
+    0 4px 10px #10241f26;
+  vertical-align: middle;
+}
+.hud-note {
+  font-size: 12px;
+  color: #e6e9dc;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.2px;
+  text-shadow: 0 1px 10px #17302477;
+}
+.hud-note > span {
+  margin: 0 8px 0 2px;
+}
+.hud-note kbd.wide {
+  padding: 0 8px;
+}
+.walking-marker > span {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: #3e5a45;
+  transition:
+    background 0.2s,
+    transform 0.35s var(--bounce);
+}
+.walking-marker > span::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid #fff3d0aa;
+  animation: ripple 2.4s ease-out infinite;
+}
+.walking-marker > b {
+  font-weight: 600;
+  font-size: 12.5px;
+  padding: 7px 12px;
+  letter-spacing: 0.2px;
+  color: var(--pill-ink);
+}
+.walking-marker:hover > span {
+  background: var(--pill-bg-hover);
+  transform: scale(1.1);
+}
+.room-pin-chip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 11px 6px 6px;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    transform 0.35s var(--bounce);
+}
+.room-marker:hover .room-pin-chip,
+.room-marker:focus-visible .room-pin-chip {
+  background: var(--pill-bg-hover);
+  box-shadow: var(--pill-shadow-hover);
+  transform: translateY(-2px) scale(1.02);
+}
+.object-marker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 16px 7px 7px;
+  transition:
+    background 0.2s,
+    transform 0.35s var(--bounce),
+    box-shadow 0.2s;
+}
+.object-marker-glow {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #4a3a1c;
+  background: radial-gradient(circle at 35% 30%, #fff1c7, #efc47b);
+  box-shadow:
+    0 0 0 4px #f4d69433,
+    0 0 22px #f4d69480;
+}
+.object-marker-glow::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid #f2cf84;
+  animation: ripple 2.2s ease-out infinite;
+}
+.object-marker-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  text-align: left;
+}
+.object-marker-text > small {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: var(--pill-soft);
+}
+.object-marker-text > span {
+  font: 600 17px/1.1 var(--font-display);
+  color: var(--pill-ink);
+}
+.object-marker > svg {
+  color: #b58a3a;
+  transition: translate 0.25s var(--bounce);
+}
+.object-marker:hover > svg {
+  translate: 4px 0;
+}
+.unavailable .world-markers {
+  display: none;
+}
 /* ---------- Header ---------- */
 .landscape-header {
   position: absolute;
@@ -167,76 +375,14 @@ kbd {
   gap: 9px;
   pointer-events: auto;
 }
-.header-controls button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  font-size: 13.5px;
-  font-weight: 500;
-  padding: 12px 17px;
-  background: #1c302975;
-  border: 1px solid #e6e6cd3d;
-  backdrop-filter: blur(14px);
-  border-radius: 999px;
-  min-height: 44px;
-  box-shadow: 0 6px 22px #0f231f2e;
-  transition:
-    background 0.2s,
-    transform 0.2s;
-}
-.header-controls button:hover {
-  background: #2c4a3fbf;
-  transform: translateY(-1px);
-}
+/* Night keeps the same cream pill, tinted toward dusk with a gold moon. */
 .header-controls .day-night-button[aria-pressed='true'] {
-  color: #ffe8b9;
-  border-color: #d6b57480;
-  background: #273452b8;
+  color: #3a3f5f;
+  background: #e9e6f1;
+  border-color: #f7f5fb;
 }
-.header-controls .rooms-button {
-  background: #f3ebdb;
-  color: #3a4c40;
-  border-color: #fff7e8;
-  min-width: 104px;
-}
-.header-controls .rooms-button:hover {
-  background: #fff7e5;
-}
-/* ---------- Side controls ---------- */
-.view-controls {
-  position: absolute;
-  right: 30px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 8;
-  background: #1c30297d;
-  border: 1px solid #c9d1b84a;
-  border-radius: 999px;
-  backdrop-filter: blur(14px);
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  box-shadow: 0 6px 22px #0f231f2e;
-}
-.view-controls button {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  background: transparent;
-  border-radius: 50%;
-  color: #eee8d8;
-  transition: background 0.18s;
-}
-.view-controls button:hover {
-  background: #e0e5c924;
-}
-.view-controls i {
-  height: 1px;
-  background: #e0e5c938;
-  margin: 4px 9px;
+.header-controls .day-night-button[aria-pressed='true'] svg {
+  color: #c39a3a;
 }
 /* ---------- Bottom HUD ---------- */
 .landscape-hud {
@@ -275,44 +421,7 @@ kbd {
   line-height: 1.6;
   display: block;
   max-width: 360px;
-}
-.hud-note {
-  font-size: 12px;
-  color: #d1d9c7;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  letter-spacing: 0.2px;
-  text-shadow: 0 1px 10px #17302477;
-}
-.hud-note > span {
-  margin: 0 8px 0 2px;
-}
-.hud-note kbd.wide {
-  padding: 0 8px;
-}
-.compass {
-  position: absolute;
-  left: 32px;
-  bottom: 196px;
-  z-index: 6;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  color: #f0e7d1;
-  pointer-events: none;
-  opacity: 0.75;
-}
-.compass > span {
-  font-size: 11px;
-  letter-spacing: 1.5px;
-}
-.compass svg {
-  filter: drop-shadow(0 1px 4px #1a382a99);
-  transition: transform 0.25s ease-out;
-}
-/* ---------- In-world markers ---------- */
+} /* ---------- In-world markers ---------- */
 .world-markers {
   position: absolute;
   inset: 0;
@@ -336,47 +445,6 @@ kbd {
   background: none;
   padding: 8px;
 }
-.walking-marker > span {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #f4efdfcc;
-  color: #3e5a45;
-  border: 1.5px solid #fff8e6;
-  box-shadow:
-    0 0 0 6px #f4efdf2e,
-    0 8px 18px #1f3a2a33;
-  transition:
-    background 0.2s,
-    scale 0.2s;
-  backdrop-filter: blur(6px);
-}
-.walking-marker > span::after {
-  content: '';
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 1.5px solid #fff3d0aa;
-  animation: ripple 2.4s ease-out infinite;
-}
-.walking-marker > b {
-  font-weight: 500;
-  font-size: 12.5px;
-  padding: 6px 11px;
-  border-radius: 999px;
-  background: #1c3029c9;
-  color: #f1eed9;
-  box-shadow: 0 2px 9px #143d2033;
-  backdrop-filter: blur(6px);
-  letter-spacing: 0.2px;
-}
-.walking-marker:hover > span {
-  background: #fff2cd;
-  scale: 1.08;
-}
 .room-marker {
   display: grid;
   place-items: center;
@@ -385,23 +453,6 @@ kbd {
   background: transparent;
   white-space: nowrap;
   color: #33453a;
-}
-.room-pin-chip {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 6px 11px 6px 6px;
-  border: 1px solid #fff8e5d9;
-  border-radius: 999px;
-  background: #faf4e6f0;
-  box-shadow:
-    0 6px 18px #1f3a2a2e,
-    inset 0 1px 0 #fff;
-  backdrop-filter: blur(8px);
-  transition:
-    background 0.18s,
-    box-shadow 0.18s,
-    translate 0.18s;
 }
 .room-pin-number {
   display: grid;
@@ -432,14 +483,6 @@ kbd {
   color: #89997d;
   opacity: 0.75;
 }
-.room-marker:hover .room-pin-chip,
-.room-marker:focus-visible .room-pin-chip {
-  background: #fffaf0;
-  box-shadow:
-    0 9px 24px #1f3a2a3d,
-    inset 0 1px 0 #fff;
-  translate: 0 -2px;
-}
 .room-marker::after {
   content: '';
   position: absolute;
@@ -448,76 +491,6 @@ kbd {
   top: calc(50% + 20px);
   background: #f5ecd9b3;
   pointer-events: none;
-}
-.object-marker {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  padding: 8px 16px 8px 8px;
-  background: #1a2d26d6;
-  color: #f6efdf;
-  border: 1px solid #ffe7b64a;
-  border-radius: 999px;
-  box-shadow:
-    0 12px 34px #0f231f52,
-    inset 0 1px 0 #ffffff14;
-  backdrop-filter: blur(14px);
-  transition:
-    background 0.2s,
-    translate 0.2s,
-    box-shadow 0.2s;
-}
-.object-marker-glow {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  color: #4a3a1c;
-  background: radial-gradient(circle at 35% 30%, #fff1c7, #efc47b);
-  box-shadow:
-    0 0 0 4px #f4d69433,
-    0 0 24px #f4d69466;
-}
-.object-marker-glow::after {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1.5px solid #f8dc9c;
-  animation: ripple 2.2s ease-out infinite;
-}
-.object-marker-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  text-align: left;
-}
-.object-marker-text > small {
-  font-size: 10px;
-  letter-spacing: 1.6px;
-  text-transform: uppercase;
-  color: #d8c9a2;
-}
-.object-marker-text > span {
-  font: 600 17px/1.1 var(--font-display);
-  color: #fff6e2;
-}
-.object-marker > svg {
-  color: #f4d694;
-  transition: translate 0.2s;
-}
-.object-marker:hover {
-  background: #22392fe6;
-  translate: 0 -2px;
-  box-shadow:
-    0 16px 40px #0f231f66,
-    inset 0 1px 0 #ffffff1c;
-}
-.object-marker:hover > svg {
-  translate: 3px 0;
 }
 @keyframes ripple {
   0% {
@@ -553,10 +526,6 @@ kbd {
   font: italic 500 24px/1.4 var(--font-display);
   color: #fff8e0;
   letter-spacing: 0.3px;
-}
-.unavailable .world-markers,
-.unavailable .compass {
-  display: none;
 }
 .landscape-fallback {
   position: absolute;
@@ -1049,10 +1018,6 @@ kbd {
   .view-controls {
     right: 23px;
   }
-  .compass {
-    left: 25px;
-    bottom: 182px;
-  }
 }
 @media (max-width: 700px) {
   .landscape-header {
@@ -1086,14 +1051,6 @@ kbd {
   }
   .view-controls svg {
     width: 16px;
-  }
-  .compass {
-    left: 20px;
-    bottom: 212px;
-  }
-  .compass svg {
-    width: 29px;
-    height: 29px;
   }
   .landscape-hud {
     padding: 20px 21px 96px;
@@ -1213,9 +1170,6 @@ kbd {
   }
   .location-caption > span,
   .hud-note,
-  .compass {
-    display: none;
-  }
   .location-caption h1 {
     font-size: 26px;
   }

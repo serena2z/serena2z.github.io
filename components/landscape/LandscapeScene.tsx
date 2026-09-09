@@ -339,6 +339,8 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           pitch = 0,
           pitchTarget = 0,
           fov = 62,
+          fovTarget = 62,
+          orbitLengthTarget: number | null = null,
           frame = 0,
           lastTime = 0,
           lastRender = 0,
@@ -426,6 +428,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
             const landing = target.room ? target.neighbors[0] : id;
             fov = 62;
             camera.fov = fov;
+            fovTarget = fov;
             camera.updateProjectionMatrix();
             const p = cameraPose(landing);
             journey = {
@@ -480,6 +483,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
             ease: 'both',
           };
           camera.fov = 48;
+          orbitLengthTarget = null;
           camera.updateProjectionMatrix();
           notify();
         }
@@ -496,6 +500,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           orbit.enabled = false;
           fov = savedWalk.fov;
           camera.fov = fov;
+          fovTarget = fov;
           camera.updateProjectionMatrix();
           journey = {
             from: camera.position.clone(),
@@ -545,21 +550,37 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
             state.current.onOpen(room.id);
           }
         }
+        // Zoom sets a target; the frame loop glides toward it so buttons never jump.
         function zoom(delta: number) {
           if (journey || state.current.blocked) return;
           viewDirty = true;
           if (mode === 'walk') {
-            fov = T.MathUtils.clamp(fov + delta * 0.045, 38, 80);
-            camera.fov = fov;
-            camera.updateProjectionMatrix();
+            fovTarget = T.MathUtils.clamp(fovTarget + delta * 0.045, 38, 80);
           } else {
-            const offset = camera.position.clone().sub(orbit.target);
-            const length = T.MathUtils.clamp(
-              offset.length() * Math.exp(delta * 0.0012),
+            const current =
+              orbitLengthTarget ?? camera.position.distanceTo(orbit.target);
+            orbitLengthTarget = T.MathUtils.clamp(
+              current * Math.exp(delta * 0.0012),
               27,
               Math.max(95, 75 / (host.clientWidth / host.clientHeight)),
             );
-            camera.position.copy(orbit.target).add(offset.setLength(length));
+          }
+        }
+        function easeZoom(dt: number) {
+          const smoothing = state.current.paused ? 1 : Math.min(1, dt * 7);
+          if (mode === 'walk' && Math.abs(fovTarget - fov) > 0.01) {
+            fov += (fovTarget - fov) * smoothing;
+            camera.fov = fov;
+            camera.updateProjectionMatrix();
+            viewDirty = true;
+          } else if (mode === 'overview' && orbitLengthTarget !== null) {
+            const offset = camera.position.clone().sub(orbit.target),
+              length = offset.length(),
+              next = length + (orbitLengthTarget - length) * smoothing;
+            camera.position.copy(orbit.target).add(offset.setLength(next));
+            viewDirty = true;
+            if (Math.abs(orbitLengthTarget - next) < 0.02)
+              orbitLengthTarget = null;
           }
         }
         runtime.current = {
@@ -1001,6 +1022,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
               }
             }
           }
+          if (!journey && !state.current.blocked) easeZoom(dt);
           if (mode === 'walk' && !journey && !state.current.blocked) {
             if (pointers.size === 0) {
               const rate = 1.9 * dt;
