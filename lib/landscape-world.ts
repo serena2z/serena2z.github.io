@@ -438,7 +438,7 @@ export function createLandscapeWorld(
     5,
   );
   moon.rotation.y = 0.32;
-  const petals = createDriftingPetals(material('#ebc1b8'));
+  const petals = createDriftingPetals();
   world.add(petals.mesh);
   // Draw stationary architecture in material batches; retain interactive objects.
   const moving = new Set<Object3D>([
@@ -483,7 +483,7 @@ export function createLandscapeWorld(
     lanterns.forEach(
       (g, i) => (g.rotation.z = Math.sin(time * 0.65 + i) * 0.025),
     );
-    petals.update(dt, time);
+    petals.update(time);
   }
   function dispose() {
     water.dispose();

@@ -91,7 +91,7 @@ await test('render buffers respect the pixel budget on Retina and 4K displays', 
 
 await test('quality only falls after sustained slow frames, with a fixed lower limit', () => {
   const healthy = new RenderBudget();
-  for (let i = 0; i < 120; i++) healthy.observe(i === 4 ? 500 : 33.3);
+  for (let i = 0; i < 120; i++) healthy.observe(i === 4 ? 500 : 16.7);
   assert.equal(healthy.scale, 1);
   const slow = new RenderBudget();
   for (let i = 0; i < 59; i++) assert.equal(slow.observe(65), false);
@@ -99,4 +99,6 @@ await test('quality only falls after sustained slow frames, with a fixed lower l
   assert.equal(slow.scale, 0.85);
   for (let i = 0; i < 600; i++) slow.observe(65);
   assert.equal(slow.scale, 0.7);
+  assert.equal(slow.fps, 30);
+  assert.equal(healthy.fps, 60);
 });

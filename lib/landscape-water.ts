@@ -3,8 +3,8 @@ import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
 
 export function createLake() {
   const water = new Reflector(new T.PlaneGeometry(3000, 3000), {
-    textureWidth: 1024,
-    textureHeight: 1024,
+    textureWidth: 768,
+    textureHeight: 768,
     multisample: 0,
     clipBias: 0.003,
     shader: {
@@ -49,7 +49,7 @@ export function createLake() {
             sin(vWorld.z * 1.7 + time * 0.38) * 0.022
           ));
           vec3 sunlight = normalize(vec3(35.0, 28.0, 25.0));
-          float sparkle = pow(max(dot(normal, normalize(sunlight + eye)), 0.0), 240.0);
+          float sparkle = pow(max(dot(normal, normalize(sunlight + eye)), 0.0), 160.0);
           float ripple = 0.012 * sin(vWorld.x * 0.41 + vWorld.z * 0.32 + time * 0.3);
           vec3 baseWater = mix(vec3(0.075, 0.285, 0.235), vec3(0.008, 0.02, 0.035), nightMix);
           vec3 lake = mix(baseWater + ripple * mix(1.0, 0.2, nightMix), reflected, fresnel);
@@ -63,40 +63,59 @@ export function createLake() {
   });
   water.rotation.x = -Math.PI / 2;
   water.position.y = -0.37;
+  water.userData.excludeFromContactShadows = true;
   // Reflector creates a ShaderMaterial; its upstream Mesh type is less specific.
   const material = water.material as T.ShaderMaterial;
   material.fog = true;
   const reflect = water.onBeforeRender.bind(water);
-  const previousView = new T.Matrix4(),
-    previousProjection = new T.Matrix4();
-  let lastReflection = -Infinity,
-    lastWaterTime = -Infinity;
-  let dirty = true;
+  const reflections = new ReflectionSchedule();
   water.onBeforeRender = function (...args) {
     const scene = args[1],
       camera = args[2];
     if (scene.overrideMaterial) return;
-    const now = performance.now();
-    const cameraMoved =
-      !camera.matrixWorld.equals(previousView) ||
-      !camera.projectionMatrix.equals(previousProjection);
-    const sceneryMoved =
-      material.uniforms.time.value !== lastWaterTime &&
-      now - lastReflection > 120;
-    if (dirty || (cameraMoved && now - lastReflection >= 65) || sceneryMoved) {
+    if (
+      reflections.needsUpdate(
+        camera,
+        material.uniforms.time.value,
+        performance.now(),
+      )
+    )
       reflect(...args);
-      previousView.copy(camera.matrixWorld);
-      previousProjection.copy(camera.projectionMatrix);
-      lastReflection = now;
-      dirty = false;
-      lastWaterTime = material.uniforms.time.value;
-    }
   };
   return {
     surface: water,
     material,
     invalidate: () => {
-      dirty = true;
+      reflections.invalidate();
     },
   };
+}
+
+/** Camera changes must reach the reflection in the same frame, including zoom. */
+export class ReflectionSchedule {
+  private previousView = new T.Matrix4();
+  private previousProjection = new T.Matrix4();
+  private lastReflection = -Infinity;
+  private lastWaterTime = -Infinity;
+  private dirty = true;
+
+  needsUpdate(camera: T.Camera, waterTime: number, now: number) {
+    const cameraMoved =
+      !camera.matrixWorld.equals(this.previousView) ||
+      !camera.projectionMatrix.equals(this.previousProjection);
+    const sceneryMoved =
+      waterTime !== this.lastWaterTime &&
+      now - this.lastReflection >= 1000 / 15;
+    if (!this.dirty && !cameraMoved && !sceneryMoved) return false;
+    this.previousView.copy(camera.matrixWorld);
+    this.previousProjection.copy(camera.projectionMatrix);
+    this.lastWaterTime = waterTime;
+    this.lastReflection = now;
+    this.dirty = false;
+    return true;
+  }
+
+  invalidate() {
+    this.dirty = true;
+  }
 }

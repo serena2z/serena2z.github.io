@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { Fog, FogExp2, LinearSRGBColorSpace } from 'three';
+import { Fog, FogExp2, LinearSRGBColorSpace, PerspectiveCamera } from 'three';
 import { WebGLMaterials } from 'three/src/renderers/webgl/WebGLMaterials.js';
-import { createLake } from '../lib/landscape-water.ts';
+import { createLake, ReflectionSchedule } from '../lib/landscape-water.ts';
 
 test('lake accepts the renderer’s fog uploads before drawing its first frame', () => {
   const lake = createLake();
@@ -28,4 +28,23 @@ test('lake accepts the renderer’s fog uploads before drawing its first frame',
     lake.surface.dispose();
     lake.surface.geometry.dispose();
   }
+});
+
+test('reflections follow every camera frame and zoom while resting with a still scene', () => {
+  const schedule = new ReflectionSchedule(),
+    camera = new PerspectiveCamera();
+  camera.updateMatrixWorld();
+  assert.equal(schedule.needsUpdate(camera, 0, 0), true);
+  assert.equal(schedule.needsUpdate(camera, 0.016, 16), false);
+  camera.position.x += 0.1;
+  camera.updateMatrixWorld();
+  assert.equal(schedule.needsUpdate(camera, 0.016, 16), true);
+  camera.fov = 45;
+  camera.updateProjectionMatrix();
+  assert.equal(schedule.needsUpdate(camera, 0.033, 33), true);
+  assert.equal(schedule.needsUpdate(camera, 0.05, 50), false);
+  assert.equal(schedule.needsUpdate(camera, 0.11, 110), true);
+  assert.equal(schedule.needsUpdate(camera, 0.11, 1000), false);
+  schedule.invalidate();
+  assert.equal(schedule.needsUpdate(camera, 0.11, 1001), true);
 });

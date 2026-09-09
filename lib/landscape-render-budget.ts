@@ -17,14 +17,18 @@ export function renderPixelRatio(
 /** Sustained slow frames lower resolution; isolated loading pauses do not. */
 export class RenderBudget {
   scale = 1;
+  fps = 60;
   private samples = 0;
   private slow = 0;
   observe(frameMs: number) {
     this.samples++;
-    if (frameMs > 48) this.slow++;
+    if (frameMs > (this.fps === 60 ? 26 : 48)) this.slow++;
     if (this.samples < 60) return false;
     const previous = this.scale;
-    if (this.slow >= 40) this.scale = Math.max(0.7, this.scale * 0.85);
+    if (this.slow >= 40) {
+      if (this.scale > 0.7) this.scale = Math.max(0.7, this.scale * 0.85);
+      else this.fps = 30;
+    }
     this.samples = 0;
     this.slow = 0;
     return this.scale !== previous;

@@ -17,6 +17,13 @@ import {
 import type { BufferGeometry, Material, Texture } from 'three';
 import type { GroundPoint } from '@/lib/landscape-navigation';
 import { renderPixelRatio, RenderBudget } from '@/lib/landscape-render-budget';
+import {
+  FrameClock,
+  motionBlend,
+  WALK_SPEED,
+  GUIDED_WALK_SPEED,
+  WALK_STEP,
+} from '@/lib/landscape-motion';
 export type ViewState = {
   mode: 'walk' | 'overview';
   waypoint: WaypointId;
@@ -77,7 +84,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           { Sky },
           { EffectComposer },
           { RenderPass },
-          { SSAOPass },
+          { LandscapeContactShadows },
           { OutputPass },
         ] = await Promise.all([
           import('three'),
@@ -90,7 +97,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           import('three/examples/jsm/objects/Sky.js'),
           import('three/examples/jsm/postprocessing/EffectComposer.js'),
           import('three/examples/jsm/postprocessing/RenderPass.js'),
-          import('three/examples/jsm/postprocessing/SSAOPass.js'),
+          import('@/lib/landscape-contact-shadows'),
           import('three/examples/jsm/postprocessing/OutputPass.js'),
         ]);
         if (cancelled || !mount.current) return;
@@ -98,6 +105,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           scene = new T.Scene();
         const budget = new RenderBudget();
         const startedAt = performance.now();
+        const frameClock = new FrameClock();
         let viewDirty = true;
         const invalidate = () => {
           viewDirty = true;
@@ -260,6 +268,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
         sky.material.uniforms.cloudDensity.value = 0.2;
         sky.material.uniforms.cloudSpeed.value = 0;
         sky.renderOrder = -1;
+        sky.userData.excludeFromContactShadows = true;
         sky.frustumCulled = false;
         scene.add(sky);
         lighting.mapping = T.EquirectangularReflectionMapping;
@@ -285,7 +294,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
         );
         const composer = new EffectComposer(renderer, target);
         const renderPass = new RenderPass(scene, camera);
-        const ambientOcclusion = new SSAOPass(
+        const ambientOcclusion = new LandscapeContactShadows(
           scene,
           camera,
           host.clientWidth,
@@ -348,8 +357,10 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           fovTarget = 62,
           orbitLengthTarget: number | null = null,
           frame = 0,
-          lastTime = 0,
-          lastRender = 0,
+          stepRemaining = 0,
+          floorTarget = 0,
+          orbitMoving = false,
+          sceneryTime = 0,
           dragged = false,
           pointerStart = { x: 0, y: 0 },
           lastPointer = { x: 0, y: 0 },
@@ -425,6 +436,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
         function travelTo(id: WaypointId) {
           if (!getWaypoint(id) || state.current.blocked) return;
           held.clear();
+          stepRemaining = 0;
           freeWalking = false;
           destination = id;
           walkingRoute = [];
@@ -453,6 +465,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           if (mode === 'overview') {
             mode = 'walk';
             orbit.enabled = false;
+            orbitLengthTarget = null;
             const landing = id;
             fov = 62;
             camera.fov = fov;
@@ -481,6 +494,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
         function overview() {
           if (state.current.blocked || mode === 'overview' || journey) return;
           held.clear();
+          stepRemaining = 0;
           current = landmarkAt(camera.position);
           savedWalk = {
             position: camera.position.clone(),
@@ -526,8 +540,10 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           )
             return;
           held.clear();
+          stepRemaining = 0;
           mode = 'walk';
           orbit.enabled = false;
+          orbitLengthTarget = null;
           fov = savedWalk.fov;
           camera.fov = fov;
           fovTarget = fov;
@@ -560,24 +576,26 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
         function turn(angle: number) {
           if (takeControl()) yawTarget += angle;
         }
-        function moveBy(offset: GroundPoint, dt: number) {
+        function moveBy(offset: GroundPoint) {
           const p = walkingSurface.move(camera.position, offset);
           camera.position.x = p.x;
           camera.position.z = p.z;
-          camera.position.y +=
-            (walkingSurface.height(p) - camera.position.y) *
-            Math.min(1, dt * 12);
+          floorTarget = walkingSurface.height(p);
           // Translation never changes yaw, pitch, or the camera quaternion.
           updateLocation();
         }
         function forward() {
-          if (takeControl()) moveBy(walkingOffset(yaw, 1, 0, 0.8), 1);
+          if (takeControl()) {
+            stepRemaining = Math.min(stepRemaining + WALK_STEP, WALK_STEP * 2);
+            viewDirty = true;
+          }
         }
         function open() {
           if (mode === 'overview' || journey || state.current.blocked) return;
           const room = roomAt(current);
           if (room) {
             held.clear();
+            stepRemaining = 0;
             state.current.onOpen(room.id);
           }
         }
@@ -598,7 +616,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           }
         }
         function easeZoom(dt: number) {
-          const smoothing = state.current.paused ? 1 : Math.min(1, dt * 7);
+          const smoothing = state.current.paused ? 1 : motionBlend(7, dt);
           if (mode === 'walk' && Math.abs(fovTarget - fov) > 0.01) {
             fov += (fovTarget - fov) * smoothing;
             camera.fov = fov;
@@ -624,6 +642,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
         };
         const initial = cameraPose(current);
         camera.position.copy(initial.position);
+        floorTarget = initial.position.y;
         camera.quaternion.copy(initial.quaternion);
         syncAngles();
         notify();
@@ -810,7 +829,10 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           )
             e.preventDefault();
           if (movementKeys.includes(k)) {
-            if (takeControl()) held.add(k);
+            if (takeControl()) {
+              stepRemaining = 0;
+              held.add(k);
+            }
             return;
           }
           if (e.repeat) return;
@@ -827,6 +849,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
         }
         function releaseKeys() {
           held.clear();
+          stepRemaining = 0;
           viewDirty = true;
         }
         function lost(e: Event) {
@@ -977,35 +1000,44 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
           frame = requestAnimationFrame(animate);
           if (document.hidden || state.current.blocked) {
             held.clear();
-            lastTime = now;
+            stepRemaining = 0;
+            frameClock.reset(now);
             return;
           }
-          if (mode === 'overview' && !journey) {
-            orbit.enabled = true;
-            orbit.enableDamping = !state.current.paused;
-            orbit.update();
-          } else orbit.enabled = false;
           const nightTarget = state.current.night ? 1 : 0;
           const lightingChanging = Math.abs(nightTarget - nightAmount) > 0.0001;
           const active =
             lightingChanging ||
             !!journey ||
             walkingRoute.length > 0 ||
+            stepRemaining > 0 ||
+            orbitMoving ||
+            (mode === 'walk' &&
+              Math.abs(floorTarget - camera.position.y) > 0.001) ||
+            (mode === 'walk' && Math.abs(fovTarget - fov) > 0.01) ||
+            (mode === 'overview' && orbitLengthTarget !== null) ||
             held.size > 0 ||
             pointers.size > 0 ||
             Math.abs(yawTarget - yaw) > 0.00005 ||
             Math.abs(pitchTarget - pitch) > 0.00005 ||
             viewDirty;
-          // Freeze the paused scene; animate idle scenery gently at 12 fps.
+          // Keep scenery fluid; hidden tabs, reading, and reduced motion still rest.
           if (!active && state.current.paused) {
-            lastTime = now;
+            frameClock.reset(now);
             return;
           }
-          if (now - lastRender < (active ? 1000 / 30 - 0.5 : 1000 / 12)) return;
-          const elapsed = now - lastTime;
-          const dt = Math.min(elapsed / 1000, active ? 0.05 : 0.1);
-          lastTime = now;
-          lastRender = now;
+          const tick = frameClock.tick(now, active ? budget.fps : 30);
+          if (!tick) return;
+          const { dt, frameMs: elapsed } = tick;
+          if (mode === 'overview' && !journey) {
+            orbit.enabled = true;
+            orbit.enableDamping = !state.current.paused;
+            orbit.dampingFactor = motionBlend(4.35, dt);
+            orbitMoving = orbit.update(dt);
+          } else {
+            orbit.enabled = false;
+            orbitMoving = false;
+          }
           if (lightingChanging) {
             nightAmount = state.current.paused
               ? nightTarget
@@ -1064,6 +1096,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
                 renderer.domElement.style.removeProperty('opacity');
               }
               journey = null;
+              floorTarget = walkingSurface.height(camera.position);
               syncAngles();
               if (!wasMap && destination) startWalkingRoute(destination);
               else {
@@ -1082,16 +1115,16 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
               const delta = yawTarget - yaw,
                 tilt = pitchTarget - pitch;
               if (Math.abs(delta) > 0.00005 || Math.abs(tilt) > 0.00005) {
-                const smoothing = state.current.paused
-                  ? 1
-                  : Math.min(1, dt * 9);
+                const smoothing = state.current.paused ? 1 : motionBlend(9, dt);
                 yaw += delta * smoothing;
                 pitch += tilt * smoothing;
                 applyLook();
               }
             }
             if (walkingRoute.length) {
-              let remaining = state.current.paused ? Infinity : 6.4 * dt;
+              let remaining = state.current.paused
+                ? Infinity
+                : GUIDED_WALK_SPEED * dt;
               while (walkingRoute.length && remaining > 0) {
                 const target = walkingRoute[0];
                 const dx = target.x - camera.position.x,
@@ -1105,9 +1138,7 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
                 remaining -= step;
                 if (distance <= step + 0.0001) walkingRoute.shift();
               }
-              camera.position.y +=
-                (walkingSurface.height(camera.position) - camera.position.y) *
-                Math.min(1, dt * 12);
+              floorTarget = walkingSurface.height(camera.position);
               if (!walkingRoute.length) {
                 current = destination ?? landmarkAt(camera.position);
                 destination = null;
@@ -1117,13 +1148,31 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
               const forward =
                 Number(held.has('arrowup') || held.has('w')) -
                 Number(held.has('arrowdown') || held.has('s'));
-              if (forward) moveBy(walkingOffset(yaw, forward, 0, 4 * dt), dt);
+              if (forward)
+                moveBy(walkingOffset(yaw, forward, 0, WALK_SPEED * dt));
+              else if (stepRemaining > 0) {
+                const step = state.current.paused
+                  ? stepRemaining
+                  : Math.min(stepRemaining, WALK_SPEED * dt);
+                moveBy(walkingOffset(yaw, 1, 0, step));
+                stepRemaining = Math.max(0, stepRemaining - step);
+              }
             }
+            // Finish settling after a step instead of leaving the camera halfway up a stair.
+            const heightDelta = floorTarget - camera.position.y;
+            camera.position.y +=
+              heightDelta *
+              (state.current.paused || Math.abs(heightDelta) < 0.001
+                ? 1
+                : motionBlend(12, dt));
           }
           landscape.update(dt, state.current.paused);
+          if (!state.current.paused) sceneryTime += dt;
+          // Project labels with this frame's camera, before the renderer updates it.
+          camera.updateMatrixWorld();
           const point = getWaypoint(current);
           const nearRoom = roomAt(current);
-          const pulse = 0.5 + 0.5 * Math.sin(now / 900);
+          const pulse = 0.5 + 0.5 * Math.sin(sceneryTime / 0.9);
           for (const [id, halo] of halos) {
             const active = !!nearRoom && nearRoom.id === id;
             const focus = hovered === id && !state.current.blocked;
@@ -1137,13 +1186,13 @@ const LandscapeScene = forwardRef<LandscapeHandle, Props>(
             const material = halo.sprite.material;
             material.opacity +=
               (target - material.opacity) *
-              (state.current.paused ? 1 : Math.min(1, dt * 6));
+              (state.current.paused ? 1 : motionBlend(6, dt));
             halo.sprite.scale.setScalar(
               focus ? 3.1 : 2.4 + (state.current.paused ? 0.1 : pulse * 0.25),
             );
             halo.light.intensity +=
               ((focus ? 4 : active ? 2.2 : 1.1) - halo.light.intensity) *
-              (state.current.paused ? 1 : Math.min(1, dt * 6));
+              (state.current.paused ? 1 : motionBlend(6, dt));
           }
           waypoints.forEach((p, i) =>
             place(

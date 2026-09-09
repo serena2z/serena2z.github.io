@@ -13,11 +13,11 @@ Requires Node.js 22.13 or newer. Install the locked dependencies with `npm ci`, 
 
 ## Exploring
 
-- Hold ↑ / ↓ to walk forward and backward, and ← / → to turn. W / S are equivalent forward/backward shortcuts. Walking speed is 4 world units per second. Movement follows the current viewing direction, keeps your camera orientation, and respects walls, furnishings, the pond, and the shoreline.
+- Hold ↑ / ↓ to walk forward and backward, and ← / → to turn. W / S are equivalent forward/backward shortcuts. Walking speed is 6 world units per second. The forward button smoothly advances 1.2 units per press. Movement follows the current viewing direction, keeps your camera orientation, and respects walls, furnishings, the pond, and the shoreline.
 - Drag to look around; scroll to look up and down. The + / − controls and pinching zoom without changing viewing modes.
 - Use the Day / Night button for sunny daylight or a moonlit sky with stars and warm silk lanterns. The transition reuses the existing lights and shadow map.
 - Press M or use “View from above” to see the whole estate. Returning restores the exact walking position and viewing direction.
-- Floating blossom petals are decorative and never block movement. They share one instanced draw, including the blossom that starts just ahead of the entrance bridge.
+- 144 curved blossom petals drift around the garden paths and entrance bridge in pink and ivory. They share one instanced draw, never block movement, tumble with a deterministic breeze, and shrink out before recycling.
 - Ground markers are optional guided routes from the current position. Pressing a movement key cancels the route immediately. Room selections use a brief 0.4-second fade directly to the room, facing its central book or scroll. Reduced-motion mode arrives instantly.
 - Click a room's central glowing book or scroll, or press Enter, to open its collection. Opening from a doorway uses the same quick room transition. The Rooms directory provides direct collection access and a “Visit room” option.
 - Escape closes a reading panel. Navigation landmarks use `#at/…` links and browser history; free walking updates the current landmark without adding a history entry for every step.
@@ -79,10 +79,12 @@ Static geometry is batched by material and location, with vertex indices preserv
 The current estate's geometry buffers use approximately 60 MB, down from 158 MB before these optimizations, with the same modeled triangle count. This is geometry storage, not total browser memory or a measured frame-rate guarantee.
 
 - The fixed sun uses a cached 2048-pixel shadow map rather than rebuilding a 4096-pixel map every frame. Small swaying decorations retain their initial shadow pose.
-- Reflections use a 1024-pixel buffer, update at most about 15 times per second while moving, and more slowly for idle scenery.
+- Reflections use a 768-pixel buffer (44% fewer pixels) and follow camera movement and zoom in the same frame. With a stationary camera, reflected scenery updates at most 15 times per second; still scenery reuses its last reflection.
 - Display buffers are capped at 2.5 million pixels and a 1.5 device-pixel ratio. Multisample edge smoothing stays enabled. Sustained slow interaction automatically lowers resolution in bounded steps.
-- Contact shading runs at half the display-buffer resolution.
-- Interaction targets 30 frames per second; idle scenery runs at 12. Hidden tabs and open reading/menu dialogs skip scene rendering. A paused, unchanged view does not redraw.
+- Contact shading runs at half the display-buffer resolution, follows the current camera projection during zoom, and excludes lantern glows, collection halos, water, sky, and drifting petals from its depth pass.
+- Interaction targets 60 frames per second; idle scenery runs at 30. A display clock maintains the cadence without catch-up bursts after stalls. Sustained slow interaction first lowers resolution, then uses a steady 30-frame target if needed. Hidden tabs and open reading/menu dialogs skip scene rendering. A paused, unchanged view does not redraw.
+
+Camera rotation, zoom, step height, and glow easing use elapsed-time smoothing. Zoom and step-height settling keep the active cadence until finished; book labels project with the current camera and have no spring delay on their position.
 
 The daylight scene and full room contents remain intact. Actual speed depends on the visitor's device and viewport; browser GPU profiling is still useful before a public launch.
 
