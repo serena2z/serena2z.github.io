@@ -371,57 +371,42 @@ export default function LandscapeExperience() {
       </footer>
       <Dialog open={menu} onOpenChange={setMenu}>
         <DialogContent className="rooms-dialog" showCloseButton={false}>
-          <div className="dialog-top">
-            <span>The estate · five rooms</span>
+          <div className="notes-toolbar">
+            <span>Explore</span>
             <button onClick={() => setMenu(false)} aria-label="Close rooms">
               <X size={19} />
             </button>
           </div>
-          <DialogTitle>Choose a door.</DialogTitle>
-          <DialogDescription>
-            Each room keeps a different part of my life. Open one to read, or
-            take the walk.
-          </DialogDescription>
-          <div className="room-directory">
-            {rooms.map((r) => (
-              <div
-                key={r.id}
-                className="room-card"
-                style={{ '--room-accent': r.accent } as CSSProperties}
-              >
-                <button
-                  className="room-card-main"
-                  onClick={() => openCollection(r.id)}
-                >
-                  <span className="room-seal" aria-hidden="true">
-                    {r.number}
-                  </span>
-                  <span className="room-card-text">
-                    <small>{r.name}</small>
-                    <h3>{r.subject}</h3>
+          <div className="rooms-scroll">
+            <DialogTitle>Rooms</DialogTitle>
+            <DialogDescription>
+              A few different parts of my life. Choose a room to read more.
+            </DialogDescription>
+            <ul className="room-directory">
+              {rooms.map((r) => (
+                <li key={r.id}>
+                  <div>
+                    <button
+                      className="room-directory-read"
+                      onClick={() => openCollection(r.id)}
+                    >
+                      {r.subject}
+                    </button>
                     <p>{r.subtitle}</p>
-                  </span>
-                  <span className="room-card-open">
-                    <BookOpen size={15} strokeWidth={1.6} />
-                    {available ? r.action : 'Read'}
-                  </span>
-                </button>
-                {available && (
-                  <button
-                    className="room-card-walk"
-                    onClick={() => go(r.node)}
-                    aria-label={`Walk to ${r.name} without opening`}
-                  >
-                    <Footprints size={14} />
-                    <span>Just visit</span>
-                  </button>
-                )}
-              </div>
-            ))}
+                  </div>
+                  {available && (
+                    <button
+                      className="room-directory-visit"
+                      onClick={() => go(r.node)}
+                      aria-label={`Visit ${r.name} without opening the portfolio`}
+                    >
+                      Visit room
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
-          <p className="directory-note">
-            I’m Serena, an engineer at Phylo. Make yourself at home.
-          </p>
         </DialogContent>
       </Dialog>
       <Dialog
@@ -430,72 +415,45 @@ export default function LandscapeExperience() {
           if (!open) setReading(null);
         }}
       >
-        <DialogContent
-          className="reading-dialog"
-          data-collection={room?.id}
-          style={{ '--collection-accent': room?.accent } as CSSProperties}
-          showCloseButton={false}
-        >
+        <DialogContent className="reading-dialog" showCloseButton={false}>
           {room && (
             <>
-              <aside className="folio-spine" data-chapter={room.number}>
-                <div className="folio-spine-top">
-                  <span className="folio-seal" aria-hidden="true">
-                    {room.number}
-                  </span>
-                  <p className="folio-eyebrow">{room.name}</p>
+              <div className="notes-toolbar">
+                <button className="notes-back" onClick={() => setReading(null)}>
+                  <ArrowLeft size={15} aria-hidden="true" /> Back to the garden
+                </button>
+                <button
+                  onClick={() => setReading(null)}
+                  aria-label="Close portfolio"
+                >
+                  <X size={19} />
+                </button>
+              </div>
+              <nav className="notes-nav" aria-label="Portfolio sections">
+                {rooms.map((r) => (
+                  <button
+                    key={r.id}
+                    aria-current={r.id === room.id ? 'page' : undefined}
+                    onClick={() => setReading(r.id)}
+                  >
+                    {r.subject}
+                  </button>
+                ))}
+              </nav>
+              {/* eslint-disable jsx-a11y/no-noninteractive-tabindex -- This scrollable pane needs keyboard focus so arrow keys can scroll long notes. */}
+              <section
+                className="notes-scroll"
+                key={room.id}
+                tabIndex={0}
+                aria-label={`${room.subject} notes`}
+              >
+                <header className="notes-header">
                   <DialogTitle>{room.subject}</DialogTitle>
                   <DialogDescription>{room.subtitle}</DialogDescription>
-                </div>
-                <div className="folio-spine-foot">
-                  <p className="folio-object-label">
-                    <BookOpen size={14} strokeWidth={1.6} aria-hidden="true" />
-                    {room.objectName}
-                  </p>
-                  <nav className="folio-chapters" aria-label="Other rooms">
-                    {rooms.map((r) => (
-                      <button
-                        key={r.id}
-                        aria-current={r.id === room.id ? 'page' : undefined}
-                        aria-label={`${r.name}: ${r.subject}`}
-                        title={r.subject}
-                        style={{ '--room-accent': r.accent } as CSSProperties}
-                        onClick={() => setReading(r.id)}
-                      >
-                        {r.number}
-                      </button>
-                    ))}
-                  </nav>
-                  <button
-                    className="return-to-room"
-                    onClick={() => setReading(null)}
-                  >
-                    <ArrowLeft size={15} /> Back to the room
-                  </button>
-                </div>
-              </aside>
-              <div className="folio-page">
-                <div className="folio-toolbar">
-                  <span>
-                    {room.number} / 05
-                    <span className="folio-toolbar-divider" />
-                    {room.objectName}
-                  </span>
-                  <button
-                    onClick={() => setReading(null)}
-                    aria-label="Return to the room"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-                <div className="folio-scroll">
-                  <header className="folio-header">
-                    <h2>{room.subject}</h2>
-                    <p>{room.subtitle}</p>
-                  </header>
-                  <RoomContents room={room} onPhoto={setPhotoId} />
-                </div>
-              </div>
+                </header>
+                <RoomContents room={room} onPhoto={setPhotoId} />
+              </section>
+              {/* eslint-enable jsx-a11y/no-noninteractive-tabindex */}
             </>
           )}
         </DialogContent>
