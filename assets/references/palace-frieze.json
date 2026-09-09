@@ -1,0 +1,10 @@
+{
+  "path": "public/materials/palace/painted-frieze.png",
+  "dimensions": [
+    2172,
+    724
+  ],
+  "tool": "built-in image_gen__imagegen",
+  "calls": 1,
+  "prompt": "Use case: historical-scene\nAsset type: seamless horizontally repeating painted timber-beam frieze texture for 3D buildings and covered corridors in a personal website inspired by Beijing's Summer Palace.\nPrimary request: Generate exactly one original texture. A long wide 3:1 image, 3072 x 1024 pixels or the highest native resolution in this ratio. The image is ONLY the flat straight-on orthographic painted surface, filling the entire frame edge to edge.\nSubject and style: Restrained, exquisite Qing-imperial garden painted decoration. Deep malachite green and midnight/cobalt blue lacquer background; graceful small cream and muted gold lotus blossoms and curling vine linework; fine double gold borders running perfectly horizontally across both the top and bottom; regular framed decorative panels. Beautiful delicate architectural ornament with slight hand-painted variation and clean well-kept paint grain.\nComposition: A continuous uniform-height timber beam band. Left and right edges must tile continuously with precisely matching border and ornament continuation. Arrange repeating framed panels and vine motifs at a steady rhythm. Fine delicate details remain crisp.\nLighting: Flat even illumination without cast shadows, highlights or directional gradients, suitable as a 3D material base-color map.\nAvoid: bright cartoon style, oversaturation, letters, text, logos, watermarks, people, animals, buildings, scenery, visible 3D beam geometry, a room, photographic perspective, bevels, depth, or surrounding margins."
+}

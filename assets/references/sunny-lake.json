@@ -1,0 +1,24 @@
+{
+  "name": "Lakeside",
+  "author": "Greg Zaal",
+  "source": "https://polyhaven.com/a/lakeside",
+  "license": "CC0",
+  "licenseURL": "https://polyhaven.com/license",
+  "selection": "Clear blue sky and direct sun over a natural rocky lakeshore, without modern buildings. The modeled estate and water cover the photographed foreground. Scenery only, not personal photography.",
+  "files": [
+    {
+      "path": "public/environment/sunny-lake-8k.jpg",
+      "sourceURL": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/lakeside.jpg",
+      "bytes": 4538493,
+      "md5": "f7ecec8ce8079abe28505079f715013c",
+      "dimensions": [8192, 4096]
+    },
+    {
+      "path": "public/environment/sunny-lake-light.hdr",
+      "sourceURL": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/lakeside_1k.hdr",
+      "bytes": 1474514,
+      "md5": "748616f734e58d0288000b5b85529bfd",
+      "dimensions": [1024, 512]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "forest_leaves_02",
+    "name": "Forest Leaves 02",
+    "author": "Rob Tuytel",
+    "coverageMeters": 3,
+    "maps": {
+      "diffuse": {
+        "path": "/private/tmp/serena-realistic-assets/forest_leaves_02_diffuse_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/forest_leaves_02/forest_leaves_02_diffuse_1k.jpg"
+      },
+      "nor_gl": {
+        "path": "/private/tmp/serena-realistic-assets/forest_leaves_02_nor_gl_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/forest_leaves_02/forest_leaves_02_nor_gl_1k.jpg"
+      },
+      "rough": {
+        "path": "/private/tmp/serena-realistic-assets/forest_leaves_02_rough_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/forest_leaves_02/forest_leaves_02_rough_1k.jpg"
+      }
+    },
+    "notes": "Mossy natural forest floor with leaves, twigs and organic debris. No paving pattern observed.",
+    "license": "CC0",
+    "licenseURL": "https://polyhaven.com/license",
+    "source": "https://polyhaven.com/a/forest_leaves_02",
+    "dimensions": [
+      1024,
+      1024
+    ]
+  },
+  {
+    "id": "chinese_cedar_bark",
+    "name": "Chinese Cedar Bark",
+    "author": "Charlotte Baglioni",
+    "coverageMeters": 2.3,
+    "maps": {
+      "diff": {
+        "path": "/private/tmp/serena-realistic-assets/chinese_cedar_bark_diff_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/chinese_cedar_bark/chinese_cedar_bark_diff_1k.jpg"
+      },
+      "nor_gl": {
+        "path": "/private/tmp/serena-realistic-assets/chinese_cedar_bark_nor_gl_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/chinese_cedar_bark/chinese_cedar_bark_nor_gl_1k.jpg"
+      },
+      "rough": {
+        "path": "/private/tmp/serena-realistic-assets/chinese_cedar_bark_rough_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/chinese_cedar_bark/chinese_cedar_bark_rough_1k.jpg"
+      }
+    },
+    "notes": "Brown cedar bark with vertical ridges and knots.",
+    "license": "CC0",
+    "licenseURL": "https://polyhaven.com/license",
+    "source": "https://polyhaven.com/a/chinese_cedar_bark",
+    "dimensions": [
+      1024,
+      1024
+    ]
+  }
+]

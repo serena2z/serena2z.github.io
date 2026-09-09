@@ -1,0 +1,59 @@
+{
+  "asset": "Grass005",
+  "asset_url": "https://ambientcg.com/a/Grass005",
+  "archive_url": "https://ambientcg.com/get?file=Grass005_2K-JPG.zip",
+  "license": "CC0 1.0 Universal",
+  "license_url": "https://docs.ambientcg.com/license/",
+  "native_resolution": [
+    2048,
+    2048
+  ],
+  "published_scale_m": null,
+  "scale_note": "Official API dimensionX/Y/Z all zero: provider does not publish a real-world scale for Grass005.",
+  "visual_assessment": "Inspected full color map: dense bright green short grass without brown litter or mud patches; suitable for sunny summer lawn.",
+  "maps": [
+    {
+      "map": "Color",
+      "path": "/private/tmp/serena-sunny-grass/Grass005_2K-JPG_Color.jpg",
+      "sha256": "2acdf15d09e790a114743f21bc0332a86e386cb77c54507323d626f67f0f2e10",
+      "bytes": 7710363
+    },
+    {
+      "map": "NormalGL",
+      "path": "/private/tmp/serena-sunny-grass/Grass005_2K-JPG_NormalGL.jpg",
+      "sha256": "c8406e8b784fbcd22d706fbe0c24175c327bca7e19ad8d09457fad8a05089548",
+      "bytes": 9634506
+    },
+    {
+      "map": "Roughness",
+      "path": "/private/tmp/serena-sunny-grass/Grass005_2K-JPG_Roughness.jpg",
+      "sha256": "20c302c4cf059d6676d83528ae7cbf62ca35944e691dc6377a164ce9c31c8e67",
+      "bytes": 3473702
+    }
+  ],
+  "zip_crc_verified": true,
+  "webOptimization": {
+    "dimensions": [
+      2048,
+      2048
+    ],
+    "method": "JPEG recompression only; no resizing. Color quality 85, normal and roughness quality 90.",
+    "files": [
+      {
+        "path": "public/materials/grass/color.jpg",
+        "bytes": 3590243,
+        "sha256": "32e7cf218c6fd5237fe72c765439ea9d023519b29189efacebf1ba0e467e9d0c"
+      },
+      {
+        "path": "public/materials/grass/normal.jpg",
+        "bytes": 5839113,
+        "sha256": "07b2cb09c88dd02f04a4240690ea04f4ad45af7e280449353186de7782a2c2ae"
+      },
+      {
+        "path": "public/materials/grass/roughness.jpg",
+        "bytes": 2611079,
+        "sha256": "0873c67c95955f6a6ec3b82da94321df00c474692a0e85092e0b16724ef985a9"
+      }
+    ]
+  }
+}

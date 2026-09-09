@@ -1,0 +1,177 @@
+{
+  "generated": {
+    "path": "/private/tmp/serena-realistic-assets/photoreal-china-lake-panorama.png",
+    "originalPath": "/Users/serenaz/.codex/generated_images/01a0836a-8895-7f30-8a15-901d5d94091d/exec-ede11c2f-1ab5-40f2-9820-de16ee331e4b.png",
+    "tool": "built-in image_gen.imagegen (tools.image_gen__imagegen)",
+    "calls": 1,
+    "requestedResolution": [
+      4096,
+      2048
+    ],
+    "actualResolution": [
+      1774,
+      887
+    ],
+    "prompt": "Use case: photorealistic-natural\nAsset type: 360-degree environment panorama for a realistic, walk-through Chinese period-drama estate rendered in 3D.\nPrimary request: Generate the highest-resolution 2:1 equirectangular 360-degree landscape panorama available, requested size 4096 by 2048 pixels. Distant forested limestone mountains encircle a broad calm lake in southern China.\nStyle/medium: True natural photographic realism, like a high-end panoramic photograph or a physically accurate Blender Cycles cinematic environment render. Fine believable vegetation and limestone rock detail, realistic atmosphere, natural materials and tones.\nComposition/framing: True 360 by 180 degree equirectangular latitude-longitude mapping. Level mountain/water horizon exactly at 50 percent of image height. Keep mountains relatively low on the horizon and distant, leaving extensive unobstructed foreground space for separate 3D architecture. The upper half is predominantly pale blue and ivory sky with delicate realistic clouds. The lower half is calm green-blue reflective water. Distant peaks are subtly hazy blue-gray. Left and right edges must match seamlessly as a continuous 360-degree panorama, with natural zenith and nadir distortion appropriate to equirectangular mapping.\nLighting/mood: Soft clear daylight with warm afternoon sunlight, peaceful and immersive, realistic restrained contrast.\nConstraints: A continuous natural lake-and-mountain environment only. No buildings, people, boats, text, watermarks, fisheye lens effect, low-poly geometry, painterly brushstrokes, illustration, stylization, or cartoon rendering."
+  },
+  "materials": [
+    {
+      "name": "Wood Planks",
+      "id": "wood_planks",
+      "author": "Amal Kumar",
+      "widthMeters": 1.5,
+      "use": "Weathered warm timber",
+      "maps": {
+        "diff": {
+          "path": "/private/tmp/serena-realistic-assets/wood_planks_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_planks/wood_planks_diff_1k.jpg",
+          "httpStatus": 200
+        },
+        "nor_gl": {
+          "path": "/private/tmp/serena-realistic-assets/wood_planks_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_planks/wood_planks_nor_gl_1k.jpg",
+          "httpStatus": 200
+        },
+        "rough": {
+          "path": "/private/tmp/serena-realistic-assets/wood_planks_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_planks/wood_planks_rough_1k.jpg",
+          "httpStatus": 200
+        }
+      },
+      "source": "https://polyhaven.com/a/wood_planks",
+      "license": "CC0",
+      "licenseURL": "https://polyhaven.com/license",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "Floor Tiles 04",
+      "id": "floor_tiles_04",
+      "author": "Rob Tuytel",
+      "widthMeters": 4,
+      "use": "Pale worn stone paving; source category is marble",
+      "maps": {
+        "diff": {
+          "path": "/private/tmp/serena-realistic-assets/floor_tiles_04_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/floor_tiles_04/floor_tiles_04_diff_1k.jpg",
+          "httpStatus": 200
+        },
+        "nor_gl": {
+          "path": "/private/tmp/serena-realistic-assets/floor_tiles_04_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/floor_tiles_04/floor_tiles_04_nor_gl_1k.jpg",
+          "httpStatus": 200
+        },
+        "rough": {
+          "path": "/private/tmp/serena-realistic-assets/floor_tiles_04_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/floor_tiles_04/floor_tiles_04_rough_1k.jpg",
+          "httpStatus": 200
+        }
+      },
+      "source": "https://polyhaven.com/a/floor_tiles_04",
+      "license": "CC0",
+      "licenseURL": "https://polyhaven.com/license",
+      "resolution": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "White Plaster Rough 01",
+      "id": "white_plaster_rough_01",
+      "author": "Rob Tuytel",
+      "widthMeters": 1,
+      "use": "Aged rough plaster, with muted gray-green weathering",
+      "maps": {
+        "diff": {
+          "path": "/private/tmp/serena-realistic-assets/white_plaster_rough_01_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/white_plaster_rough_01/white_plaster_rough_01_diff_1k.jpg",
+          "httpStatus": 200
+        },
+        "nor_gl": {
+          "path": "/private/tmp/serena-realistic-assets/white_plaster_rough_01_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/white_plaster_rough_01/white_plaster_rough_01_nor_gl_1k.jpg",
+          "httpStatus": 200
+        },
+        "rough": {
+          "path": "/private/tmp/serena-realistic-assets/white_plaster_rough_01_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/white_plaster_rough_01/white_plaster_rough_01_rough_1k.jpg",
+          "httpStatus": 200
+        }
+      },
+      "source": "https://polyhaven.com/a/white_plaster_rough_01",
+      "license": "CC0",
+      "licenseURL": "https://polyhaven.com/license",
+      "resolution": [
+        1024,
+        1024
+      ]
+    }
+  ],
+  "hdris": [
+    {
+      "name": "Shudu Lake",
+      "source": "https://polyhaven.com/a/shudu_lake",
+      "license": "CC0",
+      "licenseURL": "https://polyhaven.com/license",
+      "author": "Alex Radosnov",
+      "notes": "Best match for forested hills and calm water. Contains a modern wooden viewing deck with yellow stair edges across the foreground and small antenna masts on one hill. Ground/estate geometry must conceal the photographed deck if used.",
+      "files": [
+        {
+          "path": "/private/tmp/serena-realistic-assets/shudu_lake_8k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/shudu_lake.jpg",
+          "dimensions": [
+            8192,
+            4096
+          ],
+          "httpStatus": 200,
+          "bytes": 35529116
+        },
+        {
+          "path": "/private/tmp/serena-realistic-assets/shudu_lake_8k.hdr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/8k/shudu_lake_8k.hdr",
+          "dimensions": [
+            8192,
+            4096
+          ],
+          "httpStatus": 200,
+          "bytes": 100868255
+        }
+      ]
+    },
+    {
+      "name": "Lakeside Dawn",
+      "source": "https://polyhaven.com/a/lakeside_dawn",
+      "license": "CC0",
+      "licenseURL": "https://polyhaven.com/license",
+      "authors": [
+        "Greg Zaal",
+        "Jarod Guest"
+      ],
+      "notes": "No obvious modern structures in inspected panorama. Natural rocky shoreline, low hills, sparse trees, bare branches standing in the water, soft dawn sky. Less lush and mountainous than Shudu Lake.",
+      "files": [
+        {
+          "path": "/private/tmp/serena-realistic-assets/lakeside_dawn_8k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/lakeside_dawn.jpg",
+          "dimensions": [
+            8192,
+            4096
+          ],
+          "httpStatus": 200,
+          "bytes": 30323091
+        },
+        {
+          "path": "/private/tmp/serena-realistic-assets/lakeside_dawn_4k.hdr",
+          "url": "https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/4k/lakeside_dawn_4k.hdr",
+          "dimensions": [
+            4096,
+            2048
+          ],
+          "httpStatus": 200,
+          "bytes": 25474351
+        }
+      ]
+    }
+  ]
+}
