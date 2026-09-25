@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Serena Zhang</title>
+    <meta
+      name="description"
+      content="Serena Zhang — engineer at Phylo working where biology meets computer science. Work, research, writing, and other things."
+    />
+    <meta name="theme-color" content="#fbf8f3" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@500;600&display=swap"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="progress" aria-hidden="true"><span></span></div>
+
+    <!-- The little vertical stamp in the margin, like a preprint -->
+    <p class="stamp" aria-hidden="true">
+      serena:2609.25&ensp;[life.CS]&ensp;<span data-today>25 Sep 2026</span>
+    </p>
+
+    <div class="page">
+      <aside class="contents" aria-label="Contents">
+        <p class="contents-title">Contents</p>
+        <ol>
+          <li><a href="#work"><span>1</span>Work</a></li>
+          <li><a href="#research"><span>2</span>Research</a></li>
+          <li><a href="#writing"><span>3</span>Writing</a></li>
+          <li><a href="#other"><span>4</span>Other</a></li>
+          <li><a href="#correspondence"><span>✉</span>Say hi</a></li>
+        </ol>
+      </aside>
+
+      <main>
+        <!-- ─────────────── Title block ─────────────── -->
+        <header class="title-block" id="top">
+          <p class="kicker reveal" style="--d: 0">a personal homepage, typeset with care</p>
+
+          <h1 class="title" aria-label="Serena Zhang">
+            <span class="split" aria-hidden="true">Serena Zhang</span>
+          </h1>
+
+          <p class="affil reveal" style="--d: 6">
+            Engineer, <em>Phylo</em><sup>1</sup>&ensp;·&ensp;Computer Science,
+            <em>Stanford</em><sup>2</sup>
+          </p>
+
+          <nav class="quick reveal" style="--d: 7" aria-label="Jump to">
+            <a href="#work">work</a>
+            <a href="#research">research</a>
+            <a href="#writing">writing</a>
+            <a href="#other">other</a>
+            <a href="#correspondence">contact</a>
+          </nav>
+        </header>
+
+        <!-- ─────────────── Abstract + Figure 1 ─────────────── -->
+        <section class="lede" aria-labelledby="abstract-label">
+          <figure class="portrait reveal" style="--d: 8">
+            <button class="portrait-hit" type="button" aria-label="Say hello to Serena">
+              <span class="bubble" role="status" aria-live="polite">hi!</span>
+              <span class="portrait-sway">
+                <svg class="chibi" viewBox="30 36 180 276" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A hand-drawn chibi illustration of Serena: long dark hair, a soft pink coat and a lilac bag, waving hello.">
+                  <defs>
+                    <linearGradient id="hairG" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#4d372f" />
+                      <stop offset="1" stop-color="#2d201c" />
+                    </linearGradient>
+                    <linearGradient id="coatG" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#fef6f4" />
+                      <stop offset="1" stop-color="#f3dede" />
+                    </linearGradient>
+                    <radialGradient id="irisG" cx="0.5" cy="0.3" r="0.75">
+                      <stop offset="0" stop-color="#9a715c" />
+                      <stop offset="0.55" stop-color="#4b3128" />
+                      <stop offset="1" stop-color="#26170f" />
+                    </radialGradient>
+                  </defs>
+                
+                  <ellipse class="ground" cx="121" cy="304" rx="44" ry="5.5" fill="#f1e3dc" />
+                  <g class="figure" stroke="#3b2e2a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+                    <!-- back hair -->
+                    <g class="hair-back">
+                      <path fill="url(#hairG)" d="M62 112 C54 50 186 48 178 112 L187 214 C176 232 154 228 147 214 L95 214 C88 228 64 232 53 214 Z" />
+                    </g>
+                
+                    <!-- shoes + socks -->
+                    <path fill="#fffaf8" d="M103 284 L103 297 L113 297 L113 284 Z M129 284 L129 297 L139 297 L139 284 Z" />
+                    <ellipse cx="107" cy="301" rx="12" ry="6.5" fill="#d08b82" />
+                    <ellipse cx="135" cy="301" rx="12" ry="6.5" fill="#d08b82" />
+                
+                    <!-- coat -->
+                    <path fill="url(#coatG)" d="M94 170 C80 176 74 192 72 212 L63 284 C92 294 150 294 179 284 L168 212 C166 192 160 176 146 170 Z" />
+                    <path fill="none" stroke-width="1.6" d="M121 184 C120 220 119 252 118 289" />
+                    <path fill="none" stroke-width="1.4" stroke="#c9b3b3" d="M78 262 C100 268 140 268 164 262" />
+                
+                    <!-- hood -->
+                    <path fill="#f7e4e3" d="M85 173 C82 149 158 149 155 173 C147 184 93 184 85 173 Z" />
+                    <path fill="none" stroke-width="1.4" stroke="#c9b3b3" d="M94 170 C104 176 136 176 146 170" />
+                
+                    <!-- bag -->
+                    <path fill="#d7cce4" d="M146 238 C146 234 149 232 153 232 L171 232 C175 232 178 234 178 238 L178 256 C178 260 175 262 171 262 L153 262 C149 262 146 260 146 256 Z" />
+                    <path fill="none" stroke-width="1.6" d="M146 242 L178 242" />
+                    <circle cx="162" cy="247" r="2.2" fill="#f8b4ad" stroke-width="1.2" />
+                
+                    <!-- lowered arm -->
+                    <ellipse cx="165" cy="254" rx="6.5" ry="7" fill="#fde8df" />
+                    <path fill="url(#coatG)" d="M148 174 C165 180 172 200 174 226 L175 247 C170 252 161 252 157 248 L153 212 Z" />
+                    <path fill="none" stroke-width="1.6" d="M158 241 C162 243 170 243 174 240" />
+                
+                    <!-- bag strap -->
+                    <path fill="none" stroke-width="7.5" d="M101 173 L156 234" />
+                    <path fill="none" stroke="#c4b8d6" stroke-width="4.4" d="M101 173 L156 234" />
+                
+                    <!-- waist tie -->
+                    <path fill="#fffaf8" stroke-width="1.6" d="M118 224 C107 215 103 229 116 229 Z M123 224 C134 215 138 229 125 229 Z" />
+                    <path fill="none" stroke-width="1.6" d="M118 229 C115 239 113 247 111 255 M123 229 C125 239 127 247 129 255" />
+                
+                    <!-- neck + face -->
+                    <path fill="#fde8df" d="M111 150 L111 170 C116 174 124 174 129 170 L129 150 Z" />
+                    <g class="head">
+                      <ellipse cx="120" cy="114" rx="52" ry="48" fill="#fdeee6" />
+                
+                      <!-- face -->
+                      <g stroke="none">
+                        <g transform="translate(98 124)"><g class="blink">
+                          <ellipse rx="8.5" ry="10.5" fill="url(#irisG)" />
+                          <circle cx="-2.6" cy="-4" r="3.1" fill="#fff" />
+                          <circle cx="3" cy="4.2" r="1.5" fill="#fff" opacity="0.85" />
+                          <path d="M-10.5 -6.5 C-5.5 -13.5 5.5 -13.5 10.5 -6.5 L13 -5.5" fill="none" stroke="#2a1d19" stroke-width="2.8" stroke-linecap="round" transform="scale(-1 1)" />
+                        </g></g>
+                        <g transform="translate(142 124)"><g class="blink">
+                          <ellipse rx="8.5" ry="10.5" fill="url(#irisG)" />
+                          <circle cx="-2.6" cy="-4" r="3.1" fill="#fff" />
+                          <circle cx="3" cy="4.2" r="1.5" fill="#fff" opacity="0.85" />
+                          <path d="M-10.5 -6.5 C-5.5 -13.5 5.5 -13.5 10.5 -6.5 L13 -5.5" fill="none" stroke="#2a1d19" stroke-width="2.8" stroke-linecap="round" />
+                        </g></g>
+                        <ellipse class="cheek" cx="84" cy="139" rx="9" ry="5" fill="#f5a7a0" opacity="0.55" />
+                        <ellipse class="cheek" cx="156" cy="139" rx="9" ry="5" fill="#f5a7a0" opacity="0.55" />
+                        <path d="M119 133 C120 134 121 134 122 133" fill="none" stroke="#d99a8c" stroke-width="1.4" stroke-linecap="round" />
+                        <path d="M113 140 C116 149 124 149 127 140 C122 142 118 142 113 140 Z" fill="#d9776e" stroke="#3b2e2a" stroke-width="1.4" stroke-linejoin="round" />
+                        <path d="M117 145.5 C119 144 121 144 123 145.5" fill="none" stroke="#f3a39b" stroke-width="1.6" stroke-linecap="round" />
+                      </g>
+                
+                      <!-- bangs, side-swept from a right part -->
+                      <path fill="url(#hairG)" d="M63 122 C52 44 188 40 177 120 C173 102 167 92 159 86 C157 98 151 106 141 110 C145 100 145 92 141 85 C131 99 116 107 95 111 C103 104 107 97 109 90 C97 101 83 110 63 122 Z" />
+                      <path fill="none" stroke="#7b5a4e" stroke-width="2.6" opacity="0.75" d="M90 78 C104 69 128 67 147 72" />
+                      <path fill="none" stroke="#7b5a4e" stroke-width="1.6" opacity="0.6" d="M156 80 C159 82 162 85 164 88" />
+                    </g>
+                
+                    <!-- waving arm -->
+                    <g class="wave">
+                      <path fill="#fde8df" d="M54 132 C48 126 46 116 48 108 L50 100 C51 96 55 96 55 100 L56 107 L57 96 C58 92 62 92 62 96 L62 106 L64 98 C65 94 69 95 68 99 L67 109 L70 104 C72 101 76 103 74 107 L70 122 C69 128 64 133 58 134 Z" />
+                      <path fill="url(#coatG)" d="M101 176 C83 176 71 166 63 150 L55 133 C61 127 71 126 77 131 L86 150 C92 160 100 164 107 168 Z" />
+                      <path fill="none" stroke-width="1.6" d="M58 140 C63 136 70 134 75 136" />
+                    </g>
+                  </g>
+                </svg>
+              </span>
+              <svg class="sparkles" viewBox="0 0 100 100" aria-hidden="true"></svg>
+            </button>
+            <figcaption>
+              <b>Fig. 1.</b> The author, caught mid-wave. Drawn in SVG. <span class="hint">(Click her.)</span>
+            </figcaption>
+          </figure>
+
+          <div class="abstract reveal" style="--d: 9">
+            <p class="label" id="abstract-label">Abstract</p>
+            <p>
+              Hi, I’m Serena! It’s lovely to find you here, in this tiny corner of the internet.
+              I work where <mark>biology meets computer science</mark>: I’m an engineer at Phylo,
+              and before that I studied computer science at Stanford (B.S., M.S.) and did research
+              on medical AI.
+            </p>
+            <p>
+              This page collects what I’ve built, what I’ve written, and a few things I love. The
+              previous version of this site was a walkable 3D garden.<a
+                class="fn-ref"
+                href="#fn-1"
+                id="fn-ref-1"
+                aria-describedby="fn-1"
+                >1</a
+              >
+            </p>
+            <p class="keywords">
+              <b>Keywords —</b> biology, machine learning, medicine, design, small delightful things
+            </p>
+          </div>
+        </section>
+
+        <!-- ─────────────── 1 · Work ─────────────── -->
+        <section id="work" class="section" aria-labelledby="work-h">
+          <h2 id="work-h" class="section-h">
+            <span class="num">1</span><span class="h-text">Work</span>
+            <svg class="squiggle" viewBox="0 0 120 12" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M2 8 C 20 2, 35 12, 55 6 S 90 2, 118 7" />
+            </svg>
+          </h2>
+
+          <!--
+            To add an entry, copy an <li class="entry"> block.
+            Use <a class="entry-link" href="…"> for a clickable row, or <div class="entry-link"> otherwise.
+          -->
+          <ol class="entries">
+            <li class="entry">
+              <div class="entry-link">
+                <span class="entry-when">Now</span>
+                <span class="entry-body">
+                  <span class="entry-title">Engineer at Phylo</span>
+                  <span class="entry-note">Building software at the intersection of biology and AI.</span>
+                </span>
+              </div>
+            </li>
+            <li class="entry">
+              <a
+                class="entry-link"
+                href="https://github.com/serena2z/serena2z.github.io/tree/main/garden"
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="entry-when">2026</span>
+                <span class="entry-body">
+                  <span class="entry-title">A place to wander <span class="arrow" aria-hidden="true">↗</span></span>
+                  <span class="entry-note">
+                    A walkable Chinese-garden portfolio in Three.js: instanced petals, a reflective
+                    lake, day and night lighting, and furnished rooms for each collection.
+                  </span>
+                  <span class="tags"><span>three.js</span><span>webgl</span><span>react</span></span>
+                </span>
+              </a>
+            </li>
+            <li class="entry">
+              <a class="entry-link" href="#top">
+                <span class="entry-when">2026</span>
+                <span class="entry-body">
+                  <span class="entry-title">This website <span class="arrow" aria-hidden="true">↺</span></span>
+                  <span class="entry-note">
+                    A hand-set paper, with no framework and no build step, designed to be quick to read.
+                  </span>
+                  <span class="tags"><span>html</span><span>css</span><span>motion</span></span>
+                </span>
+              </a>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ─────────────── 2 · Research ─────────────── -->
+        <section id="research" class="section" aria-labelledby="research-h">
+          <h2 id="research-h" class="section-h">
+            <span class="num">2</span><span class="h-text">Research</span>
+            <svg class="squiggle" viewBox="0 0 120 12" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M2 6 C 25 11, 40 1, 62 6 S 96 11, 118 5" />
+            </svg>
+          </h2>
+
+          <ol class="entries">
+            <li class="entry">
+              <div class="entry-link">
+                <span class="entry-when">Harvard</span>
+                <span class="entry-body">
+                  <span class="entry-title">Radiology report generation</span>
+                  <span class="entry-note">Rajpurkar Lab, Harvard Medical School. Generating clinical reports from medical images.</span>
+                </span>
+              </div>
+            </li>
+            <li class="entry">
+              <div class="entry-link">
+                <span class="entry-when">Stanford</span>
+                <span class="entry-body">
+                  <span class="entry-title">Bias in skin-lesion classification</span>
+                  <span class="entry-note">Gevaert Lab, Stanford. Studying how dermatology models perform across skin tones.</span>
+                </span>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ─────────────── 3 · Writing ─────────────── -->
+        <section id="writing" class="section" aria-labelledby="writing-h">
+          <h2 id="writing-h" class="section-h">
+            <span class="num">3</span><span class="h-text">Writing</span>
+            <svg class="squiggle" viewBox="0 0 120 12" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M2 7 C 18 3, 30 10, 48 6 S 80 2, 100 7 S 112 8, 118 6" />
+            </svg>
+          </h2>
+
+          <!--
+            When the first essay is ready, replace the .drafting paragraph with:
+            <ol class="entries">
+              <li class="entry">
+                <a class="entry-link" href="writing/my-essay.html">
+                  <span class="entry-when">Oct 2026</span>
+                  <span class="entry-body">
+                    <span class="entry-title">Essay title <span class="arrow" aria-hidden="true">→</span></span>
+                    <span class="entry-note">One-line summary.</span>
+                  </span>
+                </a>
+              </li>
+            </ol>
+          -->
+          <p class="drafting">
+            <span class="pen" aria-hidden="true">
+              <svg viewBox="0 0 64 20"><path d="M2 14 C 8 4, 12 18, 18 10 S 28 4, 32 12 S 42 16, 46 8 S 56 6, 62 12" /></svg>
+            </span>
+            Essays are in drafts. The first one is on its way.
+          </p>
+        </section>
+
+        <!-- ─────────────── 4 · Other ─────────────── -->
+        <section id="other" class="section" aria-labelledby="other-h">
+          <h2 id="other-h" class="section-h">
+            <span class="num">4</span><span class="h-text">Other</span>
+            <svg class="squiggle" viewBox="0 0 120 12" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M2 5 C 22 10, 44 2, 64 7 S 100 10, 118 5" />
+            </svg>
+          </h2>
+
+          <h3 class="sub"><span class="num">4.1</span>Things I love</h3>
+          <ol class="entries">
+            <li class="entry">
+              <a
+                class="entry-link"
+                href="https://www.youtube.com/watch?v=SKk44nKF9_8"
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="entry-when">Video</span>
+                <span class="entry-body">
+                  <span class="entry-title">A world inside a browser <span class="arrow" aria-hidden="true">↗</span></span>
+                  <span class="entry-note">The 3D website that inspired my garden.</span>
+                </span>
+              </a>
+            </li>
+          </ol>
+
+          <h3 class="sub"><span class="num">4.2</span>Elsewhere</h3>
+          <ol class="entries">
+            <li class="entry">
+              <a class="entry-link" href="https://github.com/serena2z" target="_blank" rel="noopener">
+                <span class="entry-when">Code</span>
+                <span class="entry-body">
+                  <span class="entry-title">GitHub <span class="arrow" aria-hidden="true">↗</span></span>
+                  <span class="entry-note">@serena2z</span>
+                </span>
+              </a>
+            </li>
+          </ol>
+        </section>
+
+        <!-- ─────────────── Correspondence ─────────────── -->
+        <section id="correspondence" class="section correspondence" aria-labelledby="corr-h">
+          <h2 id="corr-h" class="section-h">
+            <span class="num">✉</span><span class="h-text">Correspondence</span>
+            <svg class="squiggle" viewBox="0 0 120 12" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M2 8 C 20 2, 35 12, 55 6 S 90 2, 118 7" />
+            </svg>
+          </h2>
+          <p>
+            Reach out anytime, whether it’s about work, a project, or a book you think I’d like.
+          </p>
+          <p class="email-row">
+            <span class="email" data-user="serena2zhang" data-domain="gmail.com"
+              >serena2zhang [at] gmail [dot] com</span
+            >
+            <button class="copy" type="button" data-copy>
+              <span class="copy-label">copy</span>
+            </button>
+          </p>
+        </section>
+
+        <!-- ─────────────── Footnotes ─────────────── -->
+        <footer class="notes">
+          <hr />
+          <ol>
+            <li id="fn-1">
+              It had silk lanterns and a jade lake, and nobody could find my résumé. It’s preserved in
+              <a href="https://github.com/serena2z/serena2z.github.io/tree/main/garden" target="_blank" rel="noopener"
+                ><code>/garden</code></a
+              >.
+              <a href="#fn-ref-1" class="fn-back" aria-label="Back to text">↩</a>
+            </li>
+          </ol>
+          <p class="colophon">
+            Set in Newsreader &amp; IBM Plex Mono. Compiled <span data-today>25 Sep 2026</span>.
+            <br />© Serena Zhang
+          </p>
+        </footer>
+      </main>
+    </div>
+
+    <script src="main.js" defer></script>
+  </body>
+</html>
