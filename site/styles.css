@@ -375,60 +375,14 @@ main {
   animation-delay: 2s;
   transition: transform 0.6s var(--ease-spring);
 }
-.chibi {
-  display: block;
+.portrait-img {
   width: 100%;
   height: auto;
-  overflow: visible;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 74%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 74%, transparent 100%);
   clip-path: inset(100% 0 0 0);
   animation: unveil 1.4s var(--ease-out) 0.9s forwards;
-}
-.chibi .wave {
-  transform-box: view-box;
-  transform-origin: 101px 176px;
-  animation: wave 5s ease-in-out 2.3s infinite;
-}
-.chibi .head {
-  transform-box: view-box;
-  transform-origin: 120px 162px;
-  animation: tilt 7s ease-in-out 2s infinite;
-}
-.chibi .blink {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: blink 4.6s linear 1.8s infinite;
-}
-.chibi .cheek {
-  transition: opacity 0.4s;
-}
-.portrait-hit:hover .chibi .cheek {
-  opacity: 0.9;
-}
-.portrait-hit.is-bounce .chibi .wave {
-  animation: wave-fast 0.9s ease-in-out;
-}
-@keyframes wave {
-  0%, 62%, 100% { transform: rotate(0); }
-  68% { transform: rotate(-14deg); }
-  74% { transform: rotate(7deg); }
-  80% { transform: rotate(-12deg); }
-  86% { transform: rotate(5deg); }
-  92% { transform: rotate(0); }
-}
-@keyframes wave-fast {
-  0%, 100% { transform: rotate(0); }
-  20% { transform: rotate(-16deg); }
-  40% { transform: rotate(8deg); }
-  60% { transform: rotate(-14deg); }
-  80% { transform: rotate(6deg); }
-}
-@keyframes tilt {
-  0%, 100% { transform: rotate(-1.5deg); }
-  50% { transform: rotate(2deg); }
-}
-@keyframes blink {
-  0%, 93%, 100% { transform: scaleY(1); }
-  95.5% { transform: scaleY(0.08); }
 }
 @keyframes unveil {
   to {
@@ -465,8 +419,8 @@ main {
 .bubble {
   position: absolute;
   z-index: 2;
-  left: 50%;
-  top: -1.6rem;
+  left: 74%;
+  top: 2%;
   translate: -50% 0;
   padding: 0.15rem 0.7rem 0.25rem;
   font-family: var(--hand);
@@ -478,14 +432,14 @@ main {
   border: 1.5px solid var(--ink);
   border-radius: 1rem;
   box-shadow: 2px 3px 0 var(--blush);
-  transform-origin: 50% 120%;
+  transform-origin: 20% 120%;
   transform: scale(0) rotate(-8deg);
   animation: pop 0.55s var(--ease-spring) 2.1s forwards;
 }
 .bubble::after {
   content: '';
   position: absolute;
-  left: 50%;
+  left: 22%;
   bottom: -6px;
   width: 9px;
   height: 9px;

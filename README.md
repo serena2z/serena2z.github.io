@@ -2,8 +2,7 @@
 
 My personal website, set like a paper.
 
-- **`site/`** is the live website. It's plain HTML, CSS, and JS, so there's no build step. Edit `site/index.html` to add work, research, or writing. Each section has a comment showing how to add an entry.
-- **`garden/`** is the archived 3D garden (Three.js + vinext). To run it locally: `cd garden && npm ci && npm run dev`. See `garden/README.md`.
+`site/` is the whole website: plain HTML, CSS, and JS, with no build step. To add work, research, or writing, edit `site/index.html`. Each section has a comment showing how to add an entry.
 
 ## Preview locally
 
